@@ -9,6 +9,7 @@ if __name__ == "__main__":
     if env not in ('dev', 'stage', 'prod'):
         env = 'dev'
     os.environ.setdefault("CONXTEXT_ENVIRONMENT", env)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "context.settings.%s" % env)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE",
+                          "context.settings.%s" % env)
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)
