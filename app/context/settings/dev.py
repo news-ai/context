@@ -7,3 +7,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 from context.settings.common import *
+
+# Database
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'context',
+        'USER': 'context',
+        'PASSWORD': 'LnmEksnM36uPHG',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
