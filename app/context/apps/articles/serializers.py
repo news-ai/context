@@ -1,4 +1,4 @@
-from urlparse import urlparse
+from .utils import url_validate
 
 from .models import Article
 from rest_framework import serializers
@@ -11,8 +11,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
         # Can do the Machine Learning/NLP tasks for an Article here
         # before it is added as a new row.
         if 'url' in data:
-            url = urlparse(data['url'])
-            data['url'] = url.scheme + "://" + url.netloc + url.path
+            data['url'] = url_validate(data['url'])
         return Article.objects.create(**data)
 
     class Meta:

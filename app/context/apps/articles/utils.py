@@ -1,0 +1,6 @@
+from urlparse import urlparse
+
+
+def url_validate(url):
+    url = urlparse(url)
+    return (url.scheme + "://" + url.netloc + url.path)
