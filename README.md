@@ -4,7 +4,7 @@ Giving context to news articles
 
 ### Setup
 
-We utilize [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) as a virtual environment wrapper. Follow the installation instructions [here](http://virtualenvwrapper.readthedocs.org/en/latest/install.html).
+We utilize [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) as a virtual environment wrapper. Follow the installation instructions [here](http://virtualenvwrapper.readthedocs.org/en/latest/install.html). After this installs do `mkvirtualenv context`. This will put you in a virtualenv for `context`. When you open up a new shell you can do `workon context`, and to deactivate this virtual environment do `deactivate`.
 
 Then go ahead and run `pip install -r requirements.txt` to install the dependencies.
 
