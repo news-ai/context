@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+        {% if user.is_authenticated %}
+            <p>You're already logged in!</p>
+        {% else %}
+            <h1>Register with Context</h1>
+
+            {% if registered %}
+            Context says: <strong>thank you for registering!</strong>
+            <a href="/user/main/">Return to the homepage.</a><br />
+            {% else %}
+            Context says: <strong>register here!</strong><br />
+
+            <form id="user_form" method="post" action="/user/register/"
+                    enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                <input type="submit" name="submit" value="Register" />
+            </form>
+            {% endif %}
+        {% endif %}
+{% endblock content %}
