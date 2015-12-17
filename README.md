@@ -14,7 +14,7 @@ After installing Postgres in `psql` run `CREATE USER context WITH PASSWORD 'LnmE
 
 Then you can run `./manage.py migrate`, and `./manage.py runserver`.
 
-Make yourself a user by running `./manage.py shell` then:
+Make yourself a user & an admin by running `./manage.py shell` then:
 
 ```
 >>> from django.contrib.auth.models import User
