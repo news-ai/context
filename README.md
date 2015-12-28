@@ -12,6 +12,8 @@ On our development environment we use Postgres. Install Postgres through either 
 
 After installing Postgres in `psql` run `CREATE USER context WITH PASSWORD 'LnmEksnM36uPHG';`, and then run `CREATE DATABASE context OWNER context;`.
 
+Also setup the test database: run `ALTER USER context CREATEDB;`, `CREATE DATABASE test_context OWNER context;`. To run tests you can simply do `./manage.py test`.
+
 Then you can run `./manage.py migrate`, and `./manage.py runserver`.
 
 Make yourself a user & an admin by running `./manage.py shell` then:
