@@ -1,7 +1,8 @@
-from .utils import url_validate
-
+from .utils import url_validate, get_title
 from .models import Article, Publisher
+
 from rest_framework import serializers
+import requests
 
 
 class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,6 +18,8 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, data):
         # Can do the Machine Learning/NLP tasks for an Article here
         # before it is added as a new row.
+
+        # Get Publisher and validate URL
         publisher = None
         if 'url' in data:
             data['url'], publisher = url_validate(data['url'])
@@ -24,11 +27,16 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
             publisher = Publisher.objects.filter(url=publisher)
             data['publisher'] = publisher[
                 0] or Publisher.objects.filter(name="Other")
+
+        # Get Title
+        response = requests.get(data['url'])
+        data['name'] = get_title(response.text)
+
         return Article.objects.create(**data)
 
     class Meta:
         model = Article
-        fields = ('name', 'url',)
+        fields = ('url',)
 
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
