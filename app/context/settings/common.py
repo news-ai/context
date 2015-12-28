@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'context.apps.users',
     'context.apps.articles',
+    'context.apps.timelines',
 )
 
 MIDDLEWARE_CLASSES = (
