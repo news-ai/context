@@ -1,4 +1,4 @@
-from .utils import url_validate, get_title
+from .utils import url_validate, get_title, entity_extraction
 from .models import Article, Publisher
 
 from rest_framework import serializers
@@ -28,9 +28,10 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
             data['publisher'] = publisher[
                 0] or Publisher.objects.filter(name="Other")
 
-        # Get Title
+        # Extract information from Article
         response = requests.get(data['url'])
-        data['name'] = get_title(response.text)
+        data['name'] = get_title(response.text) # Get Title
+        entities = entity_extraction(response.text) # Extract entities
 
         return Article.objects.create(**data)
 
