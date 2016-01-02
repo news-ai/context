@@ -25,3 +25,8 @@ Make yourself a user & an admin by running `./manage.py shell` then:
 >>> user.is_staff=True
 >>> user.save()
 ```
+
+### Notes
+
+- End user can only access the `feeds` API endpoint, which has IDs to articles/timelines/etc.
+- Articles/timelines don't list the information to the user, but user can look up with an ID.

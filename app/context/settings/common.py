@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'context.apps.users',
     'context.apps.articles',
     'context.apps.timelines',
+    'context.apps.feeds',
 )
 
 MIDDLEWARE_CLASSES = (
