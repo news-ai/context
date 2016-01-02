@@ -9,3 +9,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 from context.settings.common import *
 
 DEBUG = False
+
+REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+    'rest_framework.renderers.JSONRenderer',
+)

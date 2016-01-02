@@ -7,4 +7,4 @@ class Global(models.Model):
     created_at = models.DateTimeField()
 
     def __unicode__(self):
-        return self.created_at
+        return unicode(self.created_at)

@@ -1,0 +1,12 @@
+from rest_framework import permissions
+
+
+class GlobalFeedPermission(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        # If user is only trying to do GET, HEAD, or OPTIONS
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        # If user is admin then let user POST/etc.
+        elif request.user and request.user.is_staff:
+            return True
