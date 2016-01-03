@@ -13,3 +13,14 @@ DEBUG = False
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
     'rest_framework.renderers.JSONRenderer',
 )
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'context',
+        'USER': 'context',
+        'PASSWORD': 'LnmEksnM36uPHG',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
