@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+nohup.out
+
+static_serve
+
 # C extensions
 *.so
 
