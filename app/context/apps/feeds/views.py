@@ -11,8 +11,11 @@ class GlobalFeedViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Global.objects.all()
+        uid = self.kwargs.get('pk')
         if len(queryset) is 0:
             return queryset
+        elif uid:
+            return queryset.filter(pk=uid)
         else:
             # Return the latest global feed as an array
             latest_global_feed = queryset.order_by('-created_at')[0]
