@@ -9,6 +9,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):
         return {
+            'id': obj.pk,
             'name': obj.name,
             'url': obj.url,
             'publisher': obj.publisher.name
@@ -44,4 +45,4 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Publisher
-        fields = ('name', 'short_name', 'url')
+        fields = ('name', 'short_name', 'url',)
