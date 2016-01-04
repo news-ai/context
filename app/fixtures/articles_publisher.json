@@ -1,0 +1,1 @@
+[{"model": "articles.publisher", "pk": 1, "fields": {"name": "New York Times", "short_name": "NYT", "url": "http://www.nytimes.com"}}, {"model": "articles.publisher", "pk": 2, "fields": {"name": "Other", "short_name": "Other", "url": "http://0.0.0.0"}}]
