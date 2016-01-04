@@ -17,5 +17,11 @@ def get_article(url):
     return article
 
 
-def entity_extraction(response):
+def summary_extraction(article):
+    article.nlp()
+    return (article.keywords, article.summary)
+
+
+def entity_extraction(keywords, text):
+    print keywords
     return []

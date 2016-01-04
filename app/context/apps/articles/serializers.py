@@ -1,4 +1,4 @@
-from .utils import url_validate, entity_extraction, get_article
+from .utils import url_validate, entity_extraction, get_article, summary_extraction
 from .models import Article, Publisher, Author
 
 from rest_framework import serializers
@@ -16,6 +16,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
             'authors': obj.authors.values(),
             'created_at': obj.created_at,
             'header_image': obj.header_image,
+            'summary': obj.basic_summary,
         }
 
     # Defining behavior of when a new Article is added
@@ -47,7 +48,12 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
                 single_author.writes_for.add(data['publisher'])
                 single_author.save()
                 authors.append(single_author.pk)
-        entities = entity_extraction(article.text)  # Extract entities
+        keywords, summary = summary_extraction(article)
+        entities = entity_extraction(
+            keywords, article.text)  # Extract entities
+
+        data['basic_summary'] = summary
+
         django_article = Article.objects.create(**data)
 
         # Adding author
