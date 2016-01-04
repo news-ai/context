@@ -31,8 +31,8 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
         # Extract information from Article
         response = requests.get(data['url'])
-        data['name'] = get_title(response.text) # Get Title
-        entities = entity_extraction(response.text) # Extract entities
+        data['name'] = get_title(response.text)  # Get Title
+        entities = entity_extraction(response.text)  # Extract entities
 
         return Article.objects.create(**data)
 
