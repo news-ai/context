@@ -1,12 +1,12 @@
 from .models import Article, Publisher
 from .serializers import ArticlerSerializer, PublisherSerializer
-from .permissions import ArticlePermission
+from .permissions import GeneralPermission
 from rest_framework import viewsets
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticlerSerializer
-    permission_classes = (ArticlePermission,)
+    permission_classes = (GeneralPermission,)
 
     def get_queryset(self,):
         queryset = Article.objects.all()
@@ -21,5 +21,16 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 
 class PublisherViewSet(viewsets.ModelViewSet):
-    queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
+    permission_classes = (GeneralPermission,)
+
+    def get_queryset(self,):
+        queryset = Publisher.objects.all()
+        uid = self.kwargs.get('pk')
+        if len(queryset) is 0:
+            return queryset
+        elif uid:
+            return queryset.filter(pk=uid)
+        else:
+            if self.request.user and self.request.user.is_staff:
+                return queryset

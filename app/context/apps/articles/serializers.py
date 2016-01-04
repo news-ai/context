@@ -43,6 +43,14 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
+    def to_representation(self, obj):
+        return {
+            'id': obj.pk,
+            'name': obj.name,
+            'url': obj.short_name,
+            'publisher': obj.url
+        }
+
     class Meta:
         model = Publisher
         fields = ('name', 'short_name', 'url',)

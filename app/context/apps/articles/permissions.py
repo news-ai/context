@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class ArticlePermission(permissions.BasePermission):
+class GeneralPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         # If user is only trying to do GET, HEAD, or OPTIONS
