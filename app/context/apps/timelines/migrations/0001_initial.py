@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('articles', '0003_publisher_url'),
+        ('articles', '0001_squashed_0008_article_header_image'),
     ]
 
     operations = [
