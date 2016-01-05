@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from .utils import url_validate, entity_extraction, get_article, summary_extraction
 from .models import Article, Publisher, Author
 
+from django.utils.encoding import smart_str, smart_unicode
 from rest_framework import serializers
 import requests
 
@@ -52,7 +54,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
         entities = entity_extraction(
             keywords, article.text)  # Extract entities
 
-        data['basic_summary'] = summary
+        data['basic_summary'] = smart_unicode(summary)
 
         django_article = Article.objects.create(**data)
 

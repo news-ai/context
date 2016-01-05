@@ -8,3 +8,5 @@ class Global(models.Model):
 
     def __unicode__(self):
         return unicode(self.created_at)
+
+
