@@ -28,6 +28,8 @@ Make yourself a user & an admin by running `./manage.py shell` then:
 
 To setup `nltk` go into your python REPL `python` then do `import nltk`, `nltk.download()` (or `nltk.download_shell()` if it hangs).
 
+To setup `redis` follow [this](http://redis.io/topics/quickstart) guide or `brew install redis`. Then run `redis-server`.
+
 ### Notes
 
 - End user can only access the `feeds` API endpoint, which has IDs to articles/timelines/etc.
