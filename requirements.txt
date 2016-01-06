@@ -3,6 +3,7 @@ cssselect==0.9.1
 Django==1.9
 django-debug-toolbar==1.4
 django-extensions==1.6.1
+django-redis-cache==1.6.5
 djangorestframework==3.3.2
 djangorestframework-jwt==1.7.2
 feedfinder2==0.0.1
