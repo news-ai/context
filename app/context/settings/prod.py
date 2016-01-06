@@ -33,5 +33,6 @@ CACHES = {
         'LOCATION': '/var/run/redis/redis.sock',
     },
 }
+
 # write session information to the database and only load it from the cache
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'

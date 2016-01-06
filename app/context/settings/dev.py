@@ -27,4 +27,14 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
     'rest_framework.renderers.BrowsableAPIRenderer',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379',
+    },
+}
+
+# write session information to the database and only load it from the cache
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 INSTALLED_APPS += ('debug_toolbar',)
