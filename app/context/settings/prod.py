@@ -10,6 +10,8 @@ from context.settings.common import *
 
 DEBUG = False
 
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.99.68.57']
+
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
     'rest_framework.renderers.JSONRenderer',
 )
@@ -25,4 +27,11 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.99.68.57']
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '/var/run/redis/redis.sock',
+    },
+}
+# write session information to the database and only load it from the cache
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
