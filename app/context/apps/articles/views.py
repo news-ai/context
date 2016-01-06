@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .models import Article, Publisher, Author
 from .serializers import ArticlerSerializer, PublisherSerializer, AuthorSerializer
 from .permissions import GeneralPermission

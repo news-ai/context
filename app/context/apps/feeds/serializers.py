@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .models import Global
 
 from rest_framework import serializers

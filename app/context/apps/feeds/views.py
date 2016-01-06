@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .models import Global
 from .serializers import GlobalSerializer
 from .permissions import GlobalFeedPermission
