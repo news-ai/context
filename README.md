@@ -30,6 +30,10 @@ To setup `nltk` go into your python REPL `python` then do `import nltk`, `nltk.d
 
 To setup `redis` follow [this](http://redis.io/topics/quickstart) guide or `brew install redis`. Then run `redis-server`.
 
+### Fabfiles
+
+We use [Fabric](http://fabfile.org/) for deployments. [Here](https://micropyramid.com/blog/automate-django-deployments-with-fabfile/) is a tutorial.
+
 ### Notes
 
 - End user can only access the `feeds` API endpoint, which has IDs to articles/timelines/etc.
