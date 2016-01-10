@@ -36,3 +36,9 @@ CACHES = {
 
 # write session information to the database and only load it from the cache
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+# CELERY SETTINGS
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
