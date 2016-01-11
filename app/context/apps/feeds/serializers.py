@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .models import Global
+from context.apps.articles.serializers import ArticlerSerializer
 
 from rest_framework import serializers
 
