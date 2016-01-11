@@ -19,6 +19,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
+            else:
+                return []
 
 
 class PublisherViewSet(viewsets.ModelViewSet):
