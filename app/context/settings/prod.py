@@ -15,7 +15,9 @@ ALLOWED_HOSTS = [
     'localhost',
     '172.99.68.57',
     '.newsai.org',
-    '.newsai.org.'
+    '.newsai.org.',
+    '.context.newsai.org',
+    '.context.newsai.org.',
 ]
 
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
