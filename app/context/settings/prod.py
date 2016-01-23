@@ -10,7 +10,13 @@ from context.settings.common import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.99.68.57']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '172.99.68.57',
+    '.newsai.org',
+    '.newsai.org.'
+]
 
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
     'rest_framework.renderers.JSONRenderer',
