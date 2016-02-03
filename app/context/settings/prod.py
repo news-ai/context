@@ -13,7 +13,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    '172.99.68.57',
+    '104.196.8.167',
     '.newsai.org',
     '.newsai.org.',
     '.context.newsai.org',
