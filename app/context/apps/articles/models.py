@@ -20,12 +20,12 @@ class Author(models.Model):
 
 class Article(models.Model):
     name = models.TextField(blank=False, max_length=100)
-    basic_summary = models.TextField(blank=True, null=True, max_length=5000)
-    url = models.URLField(blank=False, unique=True, max_length=500)
+    basic_summary = models.TextField(blank=True, null=True, max_length=255)
+    url = models.URLField(blank=False, unique=True, max_length=255)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author, blank=True)
     created_at = models.DateTimeField(blank=True, null=True)
-    header_image = models.URLField(blank=True, null=True, max_length=500)
+    header_image = models.URLField(blank=True, null=True, max_length=255)
 
     def __unicode__(self):
         return self.name
