@@ -13,10 +13,10 @@ from context.settings.common import *
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'context',
-        'USER': 'context',
-        'PASSWORD': 'LnmEksnM36uPHG',
+        'USER': 'root',
+        'PASSWORD': '12345678',
         'HOST': 'localhost',
         'PORT': '5432',
     }
