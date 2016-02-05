@@ -26,12 +26,11 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'context',
-        'USER': 'postgres',
-        'PASSWORD': 'ytceqKaErBcwrT8E2C+V',
-        'HOST': '104.196.104.21',
-        'PORT': '5432',
+        'USER': 'root',
+        'PASSWORD': 'QVpjDZEiCE#c2CN9tTGU',
+        'HOST': '104.196.33.252',
     }
 }
 
