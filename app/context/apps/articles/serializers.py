@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-from .utils import url_validate, entity_extraction, get_article, summary_extraction
-from .models import Article, Publisher, Author
+from django.utils.encoding import smart_unicode
 
-from django.utils.encoding import smart_str, smart_unicode
 from rest_framework import serializers
-import requests
+
+from .models import Article, Author, Publisher, PublisherFeed
+from .utils import (
+    entity_extraction,
+    get_article,
+    summary_extraction,
+    url_validate,
+)
 
 
 class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
@@ -53,6 +58,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
         keywords, summary = summary_extraction(article)
         entities = entity_extraction(
             keywords, article.text)  # Extract entities
+        print entities
 
         data['basic_summary'] = smart_unicode(summary)
 
@@ -68,6 +74,34 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url',)
 
 
+class AuthorSerializer(serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        return {
+            'id': obj.pk,
+            'name': obj.name,
+            'writes_for': obj.writes_for.values(),
+        }
+
+    class Meta:
+        model = Author
+        fields = ('name', 'writes_for',)
+
+
+class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        return {
+            'id': obj.pk,
+            'publisher': obj.publisher,
+            'feed_url': obj.feed_url,
+        }
+
+    class Meta:
+        model = PublisherFeed
+        fields = ('publisher', 'feed_url',)
+
+
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):
@@ -81,17 +115,3 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Publisher
         fields = ('name', 'short_name', 'url',)
-
-
-class AuthorSerializer(serializers.HyperlinkedModelSerializer):
-
-    def to_representation(self, obj):
-        return {
-            'id': obj.pk,
-            'name': obj.name,
-            'writes_for': obj.writes_for.values(),
-        }
-
-    class Meta:
-        model = Author
-        fields = ('name', 'writes_for',)
