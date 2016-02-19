@@ -11,12 +11,19 @@ class Publisher(models.Model):
     def __unicode__(self):
         return self.name
 
+
+class PublisherFeed(models.Model):
+    publisher = models.ManyToManyField(Publisher, blank=True)
+    feed_url = models.URLField(blank=False, unique=True, max_length=255)
+
+
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
     writes_for = models.ManyToManyField(Publisher, blank=True)
 
     def __unicode__(self):
         return self.name
+
 
 class Article(models.Model):
     name = models.TextField(blank=False, max_length=100)
