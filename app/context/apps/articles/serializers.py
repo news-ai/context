@@ -93,7 +93,7 @@ class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         return {
             'id': obj.pk,
-            'publisher': obj.publisher,
+            'publisher': obj.publisher.values(),
             'feed_url': obj.feed_url,
         }
 
