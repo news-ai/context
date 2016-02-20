@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+from django_countries.fields import CountryField
+
 
 class Publisher(models.Model):
     name = models.TextField(blank=False, max_length=100)
     short_name = models.TextField(blank=False, max_length=5)
     url = models.URLField(blank=False, unique=True, max_length=255)
     has_paywall = models.BooleanField(blank=False, default=False)
+    for_country = CountryField(blank_label='(select country)', blank=True)
 
     def __unicode__(self):
         return self.name
