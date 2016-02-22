@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .utils import url_validate, entity_extraction, get_article, summary_extraction
+from .utils import url_validate
 from .models import Article, Publisher, Author
 
 from django.utils.encoding import smart_str, smart_unicode
@@ -35,26 +35,17 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
             data['publisher'] = publisher[
                 0] or Publisher.objects.filter(name="Other")
 
-        # Extract information from Article
-        article = get_article(data['url'])
-        data['name'] = article.title  # Get Title
-        data['created_at'] = article.publish_date
-        data['header_image'] = article.top_image
-
         # Get authors from the article
         authors = []
-        if article.authors is not None:
+        if data['authors'] is not None:
             for i in article.authors:
                 single_author, created = Author.objects.get_or_create(name=i)
                 # Only supports a single Publisher right now
                 single_author.writes_for.add(data['publisher'])
                 single_author.save()
                 authors.append(single_author.pk)
-        keywords, summary = summary_extraction(article)
-        entities = entity_extraction(
-            keywords, article.text)  # Extract entities
 
-        data['basic_summary'] = smart_unicode(summary)
+        data['basic_summary'] = smart_unicode(data['basic_summary'])
 
         django_article = Article.objects.create(**data)
 
@@ -65,7 +56,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('url',)
+        fields = ('url', 'name', 'created_at', 'header_image',)
 
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
@@ -80,7 +71,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Publisher
-        fields = ('name', 'short_name', 'url',)
+        fields = ('name', 'short_name', 'url', 'authors', 'basic_summary',)
 
 
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
