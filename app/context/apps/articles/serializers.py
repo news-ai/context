@@ -23,9 +23,6 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
     # Defining behavior of when a new Article is added
     def create(self, data):
-        # Can do the Machine Learning/NLP tasks for an Article here
-        # before it is added as a new row.
-
         # Get Publisher and validate URL
         publisher = None
         if 'url' in data:
@@ -35,22 +32,9 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
             data['publisher'] = publisher[
                 0] or Publisher.objects.filter(name="Other")
 
-        # Get authors from the article
-        authors = []
-        if data['authors'] is not None:
-            for i in article.authors:
-                single_author, created = Author.objects.get_or_create(name=i)
-                # Only supports a single Publisher right now
-                single_author.writes_for.add(data['publisher'])
-                single_author.save()
-                authors.append(single_author.pk)
-
         data['basic_summary'] = smart_unicode(data['basic_summary'])
 
         django_article = Article.objects.create(**data)
-
-        # Adding author
-        django_article.authors = authors
         django_article.save()
         return django_article
 
