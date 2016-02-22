@@ -108,8 +108,8 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
         return {
             'id': obj.pk,
             'name': obj.name,
-            'url': obj.short_name,
-            'publisher': obj.url
+            'url': obj.url,
+            'publisher': obj.short_name
         }
 
     class Meta:
