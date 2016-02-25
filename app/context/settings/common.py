@@ -54,6 +54,21 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv(
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/api/'
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/api/'
 
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    # 'social.pipeline.mail.mail_validation',
+    # 'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'context.apps.users.utils.check_company_auth',
+)
+
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
