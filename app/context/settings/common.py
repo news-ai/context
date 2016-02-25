@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'rest_framework',
     'django_extensions',
     'django_countries',
@@ -45,6 +46,15 @@ INSTALLED_APPS = (
     'context.apps.articles',
     'context.apps.timelines',
     'context.apps.feeds',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('NEWSAI_GOOGLE_OAUTH2_CLIENT_ID', '')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv(
+    'NEWSAI_GOOGLE_OAUTH2_CLIENT_SECRET', '')
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -74,6 +84,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.static',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
