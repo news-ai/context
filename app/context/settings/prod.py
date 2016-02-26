@@ -37,7 +37,12 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': '/var/run/redis/redis.sock',
+        'LOCATION': [
+            '10.240.0.3:6379'
+        ],
+        'OPTIONS': {
+            'PASSWORD': 'QGnC92ym',
+        },
     },
 }
 
