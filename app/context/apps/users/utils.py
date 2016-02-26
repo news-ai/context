@@ -2,7 +2,6 @@ from .models import Company, UserProfile
 
 
 def check_company_auth(strategy, details, user=None, *args, **kwargs):
-    print user
     try:
         user_profile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist:

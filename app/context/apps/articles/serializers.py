@@ -27,21 +27,28 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
         publisher = None
         if 'url' in data:
             data['url'], publisher = url_validate(data['url'])
-        if publisher:
-            publisher = Publisher.objects.filter(url=publisher)
-            data['publisher'] = publisher[
-                0] or Publisher.objects.filter(name="Other")
 
-        data['basic_summary'] = smart_unicode(data['basic_summary'])
+        try:
+            django_article = Article.objects.get(url=data['url'])
+        except Article.DoesNotExist:
+            django_article = None
 
-        django_article = Article.objects.create(**data)
-        django_article.save()
+        if not django_article:
+            if publisher:
+                publisher = Publisher.objects.filter(url=publisher)
+                data['publisher'] = publisher[
+                    0] or Publisher.objects.filter(name="Other")
+
+            data['basic_summary'] = smart_unicode(data['basic_summary'])
+
+            django_article = Article.objects.create(**data)
+            django_article.save()
         return django_article
 
     class Meta:
         model = Article
         fields = ('url', 'name', 'created_at',
-                  'header_image', 'authors', 'basic_summary')
+                  'header_image', 'basic_summary')
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
