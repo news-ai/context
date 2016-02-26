@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 
 from .models import Article, Author, Publisher, PublisherFeed
 from .permissions import GeneralPermission
@@ -14,6 +14,7 @@ from .serializers import (
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticlerSerializer
     permission_classes = (GeneralPermission,)
+    filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self,):
         queryset = Article.objects.all()
@@ -32,6 +33,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 class PublisherFeedViewSet(viewsets.ModelViewSet):
     serializer_class = PublisherFeedSerializer
     permission_classes = (GeneralPermission,)
+    filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self,):
         queryset = PublisherFeed.objects.all()
@@ -50,6 +52,7 @@ class PublisherFeedViewSet(viewsets.ModelViewSet):
 class PublisherViewSet(viewsets.ModelViewSet):
     serializer_class = PublisherSerializer
     permission_classes = (GeneralPermission,)
+    filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self,):
         queryset = Publisher.objects.all()
@@ -66,6 +69,8 @@ class PublisherViewSet(viewsets.ModelViewSet):
 class AuthorViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorSerializer
     permission_classes = (GeneralPermission,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('name',)
 
     def get_queryset(self,):
         queryset = Author.objects.all()
