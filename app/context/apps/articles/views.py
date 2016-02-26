@@ -34,6 +34,7 @@ class PublisherFeedViewSet(viewsets.ModelViewSet):
     serializer_class = PublisherFeedSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('name', 'short_name', 'url',)
 
     def get_queryset(self,):
         queryset = PublisherFeed.objects.all()
