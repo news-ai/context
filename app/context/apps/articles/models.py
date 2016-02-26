@@ -39,7 +39,3 @@ class Article(models.Model):
 
     def __unicode__(self):
         return self.name
-
-    @property
-    def calculate_authors(self):
-        print self
