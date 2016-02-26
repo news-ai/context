@@ -70,7 +70,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('name',)
+    filter_fields = ('name', 'writes_for__url')
 
     def get_queryset(self,):
         queryset = Author.objects.all()
