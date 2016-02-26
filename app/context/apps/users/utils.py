@@ -19,6 +19,8 @@ def check_company_auth(strategy, details, user=None, *args, **kwargs):
 
         user_profile, created = UserProfile.objects.get_or_create(
             user=user,
-            comapny=company_profile
+            company=company_profile,
         )
+    else:
+        user_profile.company = company_profile
         user_profile.save()
