@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'django_extensions',
     'django_countries',
+    'corsheaders',
     'context.apps.users',
     'context.apps.articles',
     'context.apps.timelines',
@@ -77,6 +78,7 @@ AUTHENTICATION_BACKENDS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

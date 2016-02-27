@@ -46,6 +46,11 @@ CACHES = {
     },
 }
 
+CORS_ORIGIN_WHITELIST = (
+    'publisher.newsai.org',
+    'localhost:8000'
+)
+
 # write session information to the database and only load it from the cache
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
