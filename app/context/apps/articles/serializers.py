@@ -58,11 +58,12 @@ class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
             'id': obj.pk,
             'publisher': obj.publisher.values(),
             'feed_url': obj.feed_url,
+            'tags': obj.tags,
         }
 
     class Meta:
         model = Publisher
-        fields = ('publisher', 'feed_url',)
+        fields = ('publisher', 'feed_url', 'tags',)
 
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
