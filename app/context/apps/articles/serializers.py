@@ -45,15 +45,21 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
             data['basic_summary'] = smart_unicode(data['basic_summary'])
 
+            author_list = data['authors']
+            del data['authors']
+
             django_article = Article.objects.create(**data)
             django_article.save()
+            for i in author_list:
+                django_article.authors.add(Author.objects.filter(pk=i.pk)[0])
+
         return django_article
 
     class Meta:
         model = Article
         list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
-                  'header_image', 'basic_summary')
+                  'header_image', 'authors', 'basic_summary')
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
