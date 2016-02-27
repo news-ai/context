@@ -18,7 +18,7 @@ class Publisher(models.Model):
 class PublisherFeed(models.Model):
     publisher = models.ManyToManyField(Publisher, blank=True)
     feed_url = models.URLField(blank=False, unique=True, max_length=255)
-
+    tags = models.TextField(blank=True)
 
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
