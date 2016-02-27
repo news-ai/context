@@ -4,7 +4,11 @@ from .models import Article, Publisher, Author
 
 from django.utils.encoding import smart_str, smart_unicode
 from rest_framework import serializers
-import requests
+from rest_framework_bulk import (
+    BulkListSerializer,
+    BulkSerializerMixin,
+    ListBulkCreateUpdateDestroyAPIView,
+)
 
 
 class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
@@ -47,6 +51,7 @@ class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Article
+        list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
                   'header_image', 'basic_summary')
 

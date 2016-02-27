@@ -20,6 +20,12 @@ class PublisherFeed(models.Model):
     feed_url = models.URLField(blank=False, unique=True, max_length=255)
     tags = models.TextField(blank=True)
 
+    def __unitcode__(self):
+        if self.publisher:
+            return publisher.name
+        else:
+            return feed_url
+
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
     writes_for = models.ManyToManyField(Publisher, blank=True)
