@@ -18,7 +18,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self,):
         queryset = Article.objects.all()
-        uid = self.kwargs.get('pk')
+        uid = self.kwargs.get('pk', None)
         if len(queryset) is 0:
             return queryset
         elif uid:
@@ -28,6 +28,15 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 return queryset
             else:
                 return []
+
+    def get_serializer(self, *args, **kwargs):
+        if "data" in kwargs:
+            data = kwargs["data"]
+
+            if isinstance(data, list):
+                kwargs["many"] = True
+
+        return super(ArticleViewSet, self).get_serializer(*args, **kwargs)
 
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
