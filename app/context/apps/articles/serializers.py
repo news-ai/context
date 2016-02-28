@@ -11,7 +11,7 @@ from rest_framework_bulk import (
 )
 
 
-class ArticlerSerializer(serializers.HyperlinkedModelSerializer):
+class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):
         return {
