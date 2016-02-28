@@ -22,9 +22,9 @@ class PublisherFeed(models.Model):
 
     def __unitcode__(self):
         if self.publisher:
-            return publisher.name
+            return self.publisher.name
         else:
-            return feed_url
+            return self.feed_url
 
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
