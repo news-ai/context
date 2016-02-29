@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-from context.apps.articles.models import Article
+# Core Django imports
 from django.db import models
+
+# Imports from app
+from context.apps.articles.models import Article
 
 
 class Global(models.Model):

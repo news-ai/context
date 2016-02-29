@@ -1,13 +1,14 @@
+# Third-party app imports
 from rest_framework import routers
 
+# Imports from app
+from .feeds.views import GlobalFeedViewSet
 from .articles.views import (
     ArticleViewSet,
     AuthorViewSet,
     PublisherFeedViewSet,
     PublisherViewSet,
 )
-
-from .feeds.views import GlobalFeedViewSet
 
 router = routers.DefaultRouter()
 router.register(r'articles', ArticleViewSet, base_name='article')

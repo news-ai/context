@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+# Third-party app imports
 from urlparse import urlparse
-
 from newspaper import Article
 
 

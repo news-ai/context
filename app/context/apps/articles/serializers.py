@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-from .utils import url_validate
-from .models import Article, Publisher, Author
-
+# Core Django imports
 from django.utils.encoding import smart_str, smart_unicode
+
+# Third-party app imports
 from rest_framework import serializers
 from rest_framework_bulk import (
     BulkListSerializer,
     BulkSerializerMixin,
     ListBulkCreateUpdateDestroyAPIView,
 )
+
+# Imports from app
+from .utils import url_validate
+from .models import Article, Publisher, Author
 
 
 class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):

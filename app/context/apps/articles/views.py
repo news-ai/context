@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+# Third-party app imports
 from rest_framework import viewsets, filters
 
+# Imports from app
 from .models import Article, Author, Publisher, PublisherFeed
 from .permissions import GeneralPermission
 from .serializers import (

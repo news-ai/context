@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from .models import Global
-from context.apps.articles.serializers import ArticlerSerializer
-
+# Third-party app imports
 from rest_framework import serializers
+
+# Imports from app
+from context.apps.articles.serializers import ArticlerSerializer
+from .models import Global
 
 
 class GlobalSerializer(serializers.HyperlinkedModelSerializer):

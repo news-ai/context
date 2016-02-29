@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Core Django imports
 from django.conf.urls import patterns, url
 from django.views.generic import RedirectView
 

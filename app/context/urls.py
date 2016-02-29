@@ -1,6 +1,8 @@
+# Core Django imports
 from django.conf.urls import include, url
 from django.contrib import admin
 
+# Imports from app
 from context.apps.api_router_v1 import router
 
 urlpatterns = [

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Core Django imports
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -9,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
 from django.utils.timezone import now
 
+# Imports from app
 from .models import UserProfile
 from .forms import UserForm, UserProfileForm
 

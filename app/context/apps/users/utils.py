@@ -1,3 +1,4 @@
+# Imports from app
 from .models import Company, UserProfile
 
 

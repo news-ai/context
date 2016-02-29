@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+# Core Django imports
 from django.db import models
 
+# Third-party app imports
 from django_countries.fields import CountryField
 
 
@@ -25,6 +27,7 @@ class PublisherFeed(models.Model):
             return self.publisher.name
         else:
             return self.feed_url
+
 
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)

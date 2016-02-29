@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Core Django imports
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -14,7 +15,8 @@ class Company(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    company = models.ForeignKey(Company, blank=True, null=True, on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, blank=True, null=True, on_delete=models.CASCADE)
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     is_microservice_user = models.BooleanField(blank=False, default=False)

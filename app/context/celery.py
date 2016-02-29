@@ -1,8 +1,12 @@
+# Stdlib imports
 from __future__ import absolute_import
-
 import os
-from celery import Celery
+
+# Core Django imports
 from django.conf import settings
+
+# Third-party app imports
+from celery import Celery
 
 env = os.getenv('CONTEXT_ENVIRONMENT') or 'dev'
 if env not in ('dev', 'stage', 'prod'):
