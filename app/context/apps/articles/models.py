@@ -45,6 +45,7 @@ class Article(models.Model):
     authors = models.ManyToManyField(Author, blank=True)
     created_at = models.DateTimeField(blank=True, null=True)
     header_image = models.URLField(blank=True, null=True, max_length=255)
+    finished_processing = models.BooleanField(blank=False, default=False)
 
     def __unicode__(self):
         return self.name
