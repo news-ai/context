@@ -26,12 +26,12 @@ class Publisher(models.Model):
 
 
 class PublisherFeed(models.Model):
-    publisher = models.ManyToManyField(Publisher, blank=True)
+    publisher = models.ForeignKey(Publisher, blank=True, null=True)
     feed_url = models.URLField(blank=False, unique=True, max_length=255)
     tags = models.TextField(blank=True)
     topic = models.ForeignKey(Topic, blank=True, null=True)
 
-    def __unitcode__(self):
+    def __unicode__(self):
         if self.publisher:
             return self.publisher.name
         else:
