@@ -6,6 +6,14 @@ from django.db import models
 from django_countries.fields import CountryField
 
 
+class Topic(models.Model):
+    name = models.TextField(blank=False, max_length=100)
+    parent_topic = models.ForeignKey('self', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Publisher(models.Model):
     name = models.TextField(blank=False, max_length=100)
     short_name = models.TextField(blank=False, max_length=5)
@@ -21,6 +29,7 @@ class PublisherFeed(models.Model):
     publisher = models.ManyToManyField(Publisher, blank=True)
     feed_url = models.URLField(blank=False, unique=True, max_length=255)
     tags = models.TextField(blank=True)
+    topic = models.ForeignKey(Topic, blank=True, null=True)
 
     def __unitcode__(self):
         if self.publisher:
