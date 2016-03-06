@@ -18,4 +18,4 @@ class FeedViewSet(viewsets.ReadOnlyModelViewSet):
         # Daily news feed
         if len(path) is 5:
             print path
-        return Article.objects.articles_today()
+        return Article.objects.articles_today_and_approved()
