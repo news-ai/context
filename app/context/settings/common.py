@@ -24,6 +24,7 @@ INSTALLED_APPS = (
     'context.apps.articles',
     'context.apps.timelines',
     'context.apps.feeds',
+    'context.apps.entities',
 )
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('NEWSAI_GOOGLE_OAUTH2_CLIENT_ID', '')

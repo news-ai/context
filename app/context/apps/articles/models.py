@@ -7,6 +7,7 @@ from django_countries.fields import CountryField
 
 # Imports from app
 from .managers import ArticleManager
+from context.apps.entities.models import Entity
 
 
 class Topic(models.Model):
@@ -60,6 +61,7 @@ class Article(models.Model):
     header_image = models.URLField(blank=True, null=True, max_length=255)
     finished_processing = models.BooleanField(blank=False, default=False)
     is_approved = models.BooleanField(blank=False, default=True)
+    entities = models.ForeignKey(Entity, blank=True, null=True)
 
     objects = ArticleManager()
 
