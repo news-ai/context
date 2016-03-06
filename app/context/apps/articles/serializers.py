@@ -70,7 +70,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                 for author in author_list:
                     django_article.authors.add(
                         Author.objects.filter(pk=author.pk)[0])
-            if entities:
+            if entity_list:
                 for entity in entity_list:
                     django_article.entities.add(
                         Entity.objects.filter(pk=entity.pk)[0])
