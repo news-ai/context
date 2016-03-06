@@ -32,6 +32,26 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
             'sub_types': obj.sub_types.values(),
         }
 
+    def create(self, data):
+        subtypes = None
+        main_type = None
+        if 'sub_types' in data:
+            subtypes = data['sub_types']
+            del data['sub_types']
+        if 'main_type' in data:
+            main_type = data['main_type']
+            del data['main_type']
+
+        django_entity = Entity.objects.create(**data)
+        if main_type:
+            django_entity.main_type = Type.objects.filter(pk=main_type.pk)[0]
+        if subtypes:
+            for subtype in subtypes:
+                django_entity.sub_types.add(
+                    Type.objects.filter(pk=subtype.pk)[0])
+        django_entity.save()
+        return django_entity
+
     class Meta:
         model = Entity
         fields = ('name', 'description', 'main_type', 'sub_types',)
