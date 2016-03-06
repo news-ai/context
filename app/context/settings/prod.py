@@ -1,6 +1,9 @@
 # Imports from app
 from context.settings.common import *
 
+# Third-party app imports
+import raven
+
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -53,3 +56,12 @@ BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Raven for logging
+
+RAVEN_CONFIG = {
+    'dsn': 'https://99f7cb4fd29148f783ef5300f867570d:dabc526c069241dd852cc2b756c2cd06@app.getsentry.com/69539',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.dirname(__file__)),
+}
