@@ -16,6 +16,7 @@ from rest_framework_bulk import (
 # Imports from app
 from .utils import url_validate
 from .models import Article, Publisher, Author
+from context.apps.entities.models import Entity
 
 
 class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
@@ -52,15 +53,27 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
 
             data['basic_summary'] = smart_unicode(data['basic_summary'])
 
-            author_list = data['authors']
-            del data['authors']
+            author_list = None
+            entity_list = None
+            if 'authors' in data:
+                author_list = data['authors']
+                del data['authors']
+            if 'entities' in data:
+                entity_list = data['entities']
+                del data['entities']
 
             data['added_at'] = datetime.datetime.now()
 
             django_article = Article.objects.create(**data)
             django_article.save()
-            for i in author_list:
-                django_article.authors.add(Author.objects.filter(pk=i.pk)[0])
+            if author_list:
+                for author in author_list:
+                    django_article.authors.add(
+                        Author.objects.filter(pk=author.pk)[0])
+            if entities:
+                for entity in entity_list:
+                    django_article.entities.add(
+                        Entity.objects.filter(pk=entity.pk)[0])
 
         return django_article
 
@@ -68,7 +81,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         model = Article
         list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
-                  'header_image', 'authors', 'basic_summary')
+                  'header_image', 'authors', 'basic_summary', 'entities',)
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
