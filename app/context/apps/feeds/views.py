@@ -11,6 +11,7 @@ from context.apps.articles.serializers import ArticlerSerializer
 
 class FeedViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ArticlerSerializer
+    permission_classes = (FeedPermission,)
 
     def get_queryset(self):
         path = self.request.path.split('/')
