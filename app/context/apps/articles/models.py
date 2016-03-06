@@ -5,6 +5,9 @@ from django.db import models
 # Third-party app imports
 from django_countries.fields import CountryField
 
+# Imports from app
+from .managers import ArticleManager
+
 
 class Topic(models.Model):
     name = models.TextField(blank=False, max_length=100)
@@ -55,6 +58,8 @@ class Article(models.Model):
     created_at = models.DateTimeField(blank=True, null=True)
     header_image = models.URLField(blank=True, null=True, max_length=255)
     finished_processing = models.BooleanField(blank=False, default=False)
+
+    objects = ArticleManager()
 
     def __unicode__(self):
         return self.name
