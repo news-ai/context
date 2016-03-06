@@ -3,9 +3,6 @@ import datetime
 import os
 from logging.handlers import SysLogHandler
 
-# Third-party app imports
-import raven
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*+j6z(8wbsfon8x^mv56d4xmg8*nx-4grs1)^u9tu!#__2g%f='
 DEBUG = True
