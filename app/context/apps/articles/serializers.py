@@ -15,7 +15,7 @@ from rest_framework_bulk import (
 
 # Imports from app
 from .utils import url_validate
-from .models import Article, Publisher, Author
+from .models import Article, Publisher, Author, PublisherFeed
 from context.apps.entities.models import Entity
 
 
@@ -89,13 +89,13 @@ class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         return {
             'id': obj.pk,
-            'publisher': obj.publisher.values(),
+            'publisher': obj.publisher,
             'feed_url': obj.feed_url,
             'tags': obj.tags,
         }
 
     class Meta:
-        model = Publisher
+        model = PublisherFeed
         fields = ('publisher', 'feed_url', 'tags',)
 
 
