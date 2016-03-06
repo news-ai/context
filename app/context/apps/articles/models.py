@@ -56,6 +56,7 @@ class Article(models.Model):
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author, blank=True)
     created_at = models.DateTimeField(blank=True, null=True)
+    added_at = models.DateTimeField(blank=False, null=False)
     header_image = models.URLField(blank=True, null=True, max_length=255)
     finished_processing = models.BooleanField(blank=False, default=False)
 

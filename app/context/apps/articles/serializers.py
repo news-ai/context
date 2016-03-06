@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Stdlib imports
+import datetime
+
 # Core Django imports
 from django.utils.encoding import smart_str, smart_unicode
 
@@ -51,6 +54,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
 
             author_list = data['authors']
             del data['authors']
+
+            data['added_at'] = datetime.datetime.now()
 
             django_article = Article.objects.create(**data)
             django_article.save()
