@@ -59,6 +59,7 @@ class Article(models.Model):
     added_at = models.DateTimeField(blank=False, null=False)
     header_image = models.URLField(blank=True, null=True, max_length=255)
     finished_processing = models.BooleanField(blank=False, default=False)
+    is_approved = models.BooleanField(blank=False, default=True)
 
     objects = ArticleManager()
 
