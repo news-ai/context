@@ -17,6 +17,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticlerSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('entities_processed',)
 
     def get_queryset(self,):
         queryset = Article.objects.all()

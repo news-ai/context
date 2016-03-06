@@ -66,7 +66,8 @@ class Article(models.Model):
 
     # Extra boolean objects
     is_approved = models.BooleanField(blank=False, default=True)
-    finished_processing = models.BooleanField(blank=False, default=False)
+    entities_processed = models.BooleanField(blank=False, default=False)
+    finished_processing = models.BooleanField(blank=False, default=False) 
 
     objects = ArticleManager()
 
