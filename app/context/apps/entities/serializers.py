@@ -26,8 +26,8 @@ class TypeSerializer(serializers.HyperlinkedModelSerializer):
         if parent_type:
             django_type.parent_type = Type.objects.filter(pk=parent_type.pk)[0]
 
-        django_entity.save()
-        return django_entity
+        django_type.save()
+        return django_type
 
     class Meta:
         model = Type
