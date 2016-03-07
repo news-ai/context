@@ -13,7 +13,7 @@ class TypeSerializer(serializers.HyperlinkedModelSerializer):
             'id': obj.pk,
             'name': obj.name,
             'description': obj.description,
-            'parent_type': obj.parent_type,
+            'parent_type': obj.parent_type.name,
         }
 
     def create(self, data):
