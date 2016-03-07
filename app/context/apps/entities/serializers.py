@@ -16,6 +16,19 @@ class TypeSerializer(serializers.HyperlinkedModelSerializer):
             'parent_type': obj.parent_type,
         }
 
+    def create(self, data):
+        parent_type = None
+        if 'parent_type' in data:
+            subtypes = data['sub_types']
+            del data['sub_types']
+
+        django_type = Type.objects.create(**data)
+        if parent_type:
+            django_type.parent_type = Type.objects.filter(pk=parent_type.pk)[0]
+
+        django_entity.save()
+        return django_entity
+
     class Meta:
         model = Type
         fields = ('name', 'description', 'parent_type',)
