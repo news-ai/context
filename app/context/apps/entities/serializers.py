@@ -19,7 +19,7 @@ class TypeSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, data):
         parent_type = None
         if 'parent_type' in data:
-            subtypes = data['parent_type']
+            parent_type = data['parent_type']
             del data['parent_type']
 
         django_type = Type.objects.create(**data)
