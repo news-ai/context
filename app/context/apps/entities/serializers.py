@@ -42,6 +42,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
             'name': obj.name,
             'description': obj.description,
             'main_type': obj.main_type.name,
+            'sub_types': obj.sub_types.values(),
         }
 
     def create(self, data):
@@ -76,7 +77,6 @@ class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
             'entity': obj.entity.name,
             'score': obj.score,
             'count': obj.count,
-            'sub_types': obj.sub_types.values(),
         }
 
     def create(self, data):

@@ -35,7 +35,7 @@ class EntityViewSet(viewsets.ModelViewSet):
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('name', 'description',
-                     'main_type__name',)
+                     'main_type__name', 'sub_types__name',)
 
     def get_queryset(self,):
         queryset = Entity.objects.all()
@@ -53,7 +53,7 @@ class EntityScoreViewSet(viewsets.ModelViewSet):
     serializer_class = EntityScoreSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('entity__name', 'sub_types__name',)
+    filter_fields = ('entity__name',)
 
     def get_queryset(self,):
         queryset = EntityScore.objects.all()
