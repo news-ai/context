@@ -3,7 +3,7 @@ from rest_framework import routers
 
 # Imports from app
 from .feeds.views import FeedViewSet
-from .entities.views import TypeViewSet, EntityViewSet
+from .entities.views import TypeViewSet, EntityViewSet, EntityScoreViewSet
 from .articles.views import (
     ArticleViewSet,
     AuthorViewSet,
@@ -20,3 +20,4 @@ router.register(r'publisherfeeds', PublisherFeedViewSet,
                 base_name='publisherfeed')
 router.register(r'types', TypeViewSet, base_name='type')
 router.register(r'entities', EntityViewSet, base_name='entity')
+router.register(r'entityscores', EntityScoreViewSet, base_name='entityscore')

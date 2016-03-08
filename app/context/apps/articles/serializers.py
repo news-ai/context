@@ -16,7 +16,7 @@ from rest_framework_bulk import (
 # Imports from app
 from .utils import url_validate
 from .models import Article, Publisher, Author, PublisherFeed
-from context.apps.entities.models import Entity
+from context.apps.entities.models import EntityScore
 
 
 class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
@@ -33,7 +33,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'created_at': obj.created_at,
             'header_image': obj.header_image,
             'summary': obj.basic_summary,
-            'entities': obj.entities.values(),
+            'entity_scores': obj.entity_scores.values(),
         }
 
     # Defining behavior of when a new Article is added
@@ -61,9 +61,9 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             if 'authors' in data:
                 author_list = data['authors']
                 del data['authors']
-            if 'entities' in data:
-                entity_list = data['entities']
-                del data['entities']
+            if 'entity_scores' in data:
+                entity_list = data['entity_scores']
+                del data['entity_scores']
 
             data['added_at'] = datetime.datetime.now()
 
@@ -75,8 +75,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                         Author.objects.filter(pk=author.pk)[0])
             if entity_list:
                 for entity in entity_list:
-                    django_article.entities.add(
-                        Entity.objects.filter(pk=entity.pk)[0])
+                    django_article.entity_scores.add(
+                        EntityScore.objects.filter(pk=entity.pk)[0])
 
         return django_article
 
@@ -91,10 +91,10 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'created_at', django_article.created_at)
 
         # Process entity data
-        if 'entities' in data:
-            for entity in data['entities']:
-                django_article.entities.add(
-                    Entity.objects.filter(pk=entity.pk)[0])
+        if 'entity_scores' in data:
+            for entity in data['entity_scores']:
+                django_article.entity_scores.add(
+                    EntityScore.objects.filter(pk=entity.pk)[0])
             django_article.entities_processed = data.get(
                 'entities_processed', django_article.entities_processed)
 
@@ -104,7 +104,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         model = Article
         list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
-                  'header_image', 'authors', 'basic_summary', 'entities',)
+                  'header_image', 'authors', 'basic_summary', 'entity_scores',)
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):

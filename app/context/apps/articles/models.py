@@ -7,7 +7,7 @@ from django_countries.fields import CountryField
 
 # Imports from app
 from .managers import ArticleManager
-from context.apps.entities.models import Entity
+from context.apps.entities.models import Entity, EntityScore
 
 
 class Topic(models.Model):
@@ -58,7 +58,7 @@ class Article(models.Model):
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author, blank=True)
     header_image = models.URLField(blank=True, null=True, max_length=255)
-    entities = models.ManyToManyField(Entity, blank=True, null=True)
+    entity_scores = models.ManyToManyField(EntityScore, blank=True)
 
     # Meta data about the article
     created_at = models.DateTimeField(blank=True, null=True)

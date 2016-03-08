@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # Imports from app
-from .models import Type, Entity
+from .models import Type, Entity, EntityScore
 
 
 class TypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -68,3 +68,26 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Entity
         fields = ('name', 'description', 'main_type', 'sub_types',)
+
+
+class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        return {
+            'entity': obj.entity.name,
+            'score': obj.score,
+        }
+
+    def create(self, data):
+        entity = None
+        if 'entity' in data:
+            entity = data['entity']
+            del data['entity']
+
+        django_entity_score = EntityScore.objects.create(**data)
+        if entity:
+            django_entity_score.entity = Entity.objects.filter(pk=entity.pk)[0]
+
+    class Meta:
+        model = EntityScore
+        fields = ('entity', 'score',)

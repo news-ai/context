@@ -25,3 +25,12 @@ class Entity(models.Model):
 
     class Meta:
         verbose_name_plural = "entities"
+
+
+class EntityScore(models.Model):
+    entity = models.ForeignKey(
+        Entity, blank=True, null=True, related_name='entity')
+    score = models.DecimalField(max_digits=9, decimal_places=6)
+
+    def __unicode(self):
+        return self.entity.name + ' ' + str(self.score)
