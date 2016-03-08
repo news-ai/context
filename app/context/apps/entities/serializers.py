@@ -76,6 +76,7 @@ class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
         return {
             'entity': obj.entity.name,
             'score': obj.score,
+            'count': obj.count,
         }
 
     def create(self, data):
@@ -92,4 +93,4 @@ class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = EntityScore
-        fields = ('entity', 'score',)
+        fields = ('entity', 'score', 'count',)
