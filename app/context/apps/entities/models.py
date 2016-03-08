@@ -17,8 +17,6 @@ class Entity(models.Model):
     description = models.TextField(blank=True)
     main_type = models.ForeignKey(
         Type, blank=True, null=True, related_name='main_type')
-    sub_types = models.ManyToManyField(
-        Type, blank=True, related_name='sub_types')
 
     def __unicode__(self):
         return self.name
@@ -32,6 +30,8 @@ class EntityScore(models.Model):
         Entity, blank=True, null=True, related_name='entity')
     score = models.DecimalField(max_digits=9, decimal_places=6)
     count = models.IntegerField(null=True, blank=True)
+    sub_types = models.ManyToManyField(
+        Type, blank=True, related_name='sub_types')
 
-    def __unicode(self):
-        return self.entity.name + ' ' + str(self.score)
+    def __unicode__(self):
+        return self.entity.name + ' - ' + str(self.score)
