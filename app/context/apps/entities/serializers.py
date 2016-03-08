@@ -46,13 +46,21 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, data):
         main_type = None
+        sub_types = None
         if 'main_type' in data:
             main_type = data['main_type']
             del data['main_type']
+        if 'sub_types' in data:
+            sub_types = data['sub_types']
+            del data['sub_types']
 
         django_entity = Entity.objects.create(**data)
         if main_type:
             django_entity.main_type = Type.objects.filter(pk=main_type.pk)[0]
+        if sub_types:
+            for subtype in sub_types:
+                django_entity.sub_types.add(
+                    Type.objects.filter(pk=subtype.pk)[0])
         django_entity.save()
         return django_entity
 
@@ -73,21 +81,12 @@ class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, data):
         entity = None
-        subtypes = None
         if 'entity' in data:
             entity = data['entity']
             del data['entity']
-        if 'sub_types' in data:
-            subtypes = data['sub_types']
-            del data['sub_types']
-
         django_entity_score = EntityScore.objects.create(**data)
         if entity:
             django_entity_score.entity = Entity.objects.filter(pk=entity.pk)[0]
-        if subtypes:
-            for subtype in subtypes:
-                django_entity_score.sub_types.add(
-                    Type.objects.filter(pk=subtype.pk)[0])
         django_entity_score.save()
         return django_entity_score
 
