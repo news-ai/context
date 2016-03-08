@@ -87,6 +87,8 @@ class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
         django_entity_score = EntityScore.objects.create(**data)
         if entity:
             django_entity_score.entity = Entity.objects.filter(pk=entity.pk)[0]
+        django_entity_score.save()
+        return django_entity_score
 
     class Meta:
         model = EntityScore
