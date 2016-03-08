@@ -31,7 +31,7 @@ class EntityScore(models.Model):
     entity = models.ForeignKey(
         Entity, blank=True, null=True, related_name='entity')
     score = models.DecimalField(max_digits=9, decimal_places=6)
-    count = models.IntegerField(blank=True, null=True)
+    count = models.IntegerField(null=True, blank=True)
 
     def __unicode(self):
         return self.entity.name + ' ' + str(self.score)
