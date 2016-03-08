@@ -20,6 +20,8 @@ from context.apps.entities.models import Entity
 
 
 class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
+    name = serializers.CharField(required=False)
+    url = serializers.URLField(required=False)
 
     def to_representation(self, obj):
         return {
@@ -31,6 +33,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'created_at': obj.created_at,
             'header_image': obj.header_image,
             'summary': obj.basic_summary,
+            'entities': obj.entities.values(),
         }
 
     # Defining behavior of when a new Article is added
@@ -74,6 +77,26 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                 for entity in entity_list:
                     django_article.entities.add(
                         Entity.objects.filter(pk=entity.pk)[0])
+
+        return django_article
+
+    def update(self, django_article, data):
+        django_article.name = data.get('name', django_article.name)
+        django_article.basic_summary = data.get(
+            'basic_summary', django_article.basic_summary)
+        django_article.url = data.get('url', django_article.url)
+        django_article.header_image = data.get(
+            'header_image', django_article.header_image)
+        django_article.created_at = data.get(
+            'created_at', django_article.created_at)
+
+        # Process entity data
+        if 'entities' in data:
+            for entity in data['entities']:
+                django_article.entities.add(
+                    Entity.objects.filter(pk=entity.pk)[0])
+            django_article.entities_processed = data.get(
+                'entities_processed', django_article.entities_processed)
 
         return django_article
 

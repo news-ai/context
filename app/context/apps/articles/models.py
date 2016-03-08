@@ -58,7 +58,7 @@ class Article(models.Model):
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author, blank=True)
     header_image = models.URLField(blank=True, null=True, max_length=255)
-    entities = models.ForeignKey(Entity, blank=True, null=True)
+    entities = models.ManyToManyField(Entity, blank=True, null=True)
 
     # Meta data about the article
     created_at = models.DateTimeField(blank=True, null=True)
