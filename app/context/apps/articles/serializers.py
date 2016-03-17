@@ -93,9 +93,12 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
 
         # Process entity data
         if 'entity_scores' in data:
+            entity_ids_seen = []
             for entity in data['entity_scores']:
-                django_article.entity_scores.add(
-                    EntityScore.objects.filter(pk=entity.pk)[0])
+                if entity.entity.pk not in entity_ids_seen:
+                    django_article.entity_scores.add(
+                        EntityScore.objects.filter(pk=entity.pk)[0])
+                    entity_ids_seen.append(entity.entity.pk)
             django_article.entities_processed = data.get(
                 'entities_processed', django_article.entities_processed)
 
