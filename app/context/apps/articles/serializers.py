@@ -34,6 +34,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'header_image': obj.header_image,
             'summary': obj.basic_summary,
             'entity_scores': obj.entity_scores.values(),
+            'added_at': obj.added_at,
         }
 
     # Defining behavior of when a new Article is added
