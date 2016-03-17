@@ -10,5 +10,9 @@ class ArticleManager(models.Manager):
 
     def articles_today_and_approved(self):
         today = datetime.date.today()
-        return self.filter(created_at__range=(datetime.datetime.combine(today, datetime.time.min),
-                                              datetime.datetime.combine(today, datetime.time.max)), is_approved=True)
+        return self.filter(created_at__range=(
+            datetime.datetime.combine(today, datetime.time.min),
+            datetime.datetime.combine(today, datetime.time.max)),
+            is_approved=True,
+            entities_processed=True
+        )
