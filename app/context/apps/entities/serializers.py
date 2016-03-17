@@ -43,6 +43,13 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
             'description': obj.description,
             'main_type': obj.main_type.name,
             'sub_types': obj.sub_types.values(),
+            'website': obj.website,
+            'yago': obj.yago,
+            'freebase': obj.freebase,
+            'dbpedia': obj.dbpedia,
+            'geonames': obj.geonames,
+            'geo_lat': obj.geo_lat,
+            'geo_long': obj.geo_long
         }
 
     def create(self, data):
@@ -67,7 +74,8 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Entity
-        fields = ('name', 'description', 'main_type', 'sub_types',)
+        fields = ('name', 'description', 'main_type', 'sub_types', 'website',
+                  'yago', 'freebase', 'dbpedia', 'geonames', 'geo_lat', 'geo_long')
 
 
 class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
