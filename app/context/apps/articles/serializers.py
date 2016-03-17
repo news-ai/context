@@ -99,6 +99,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             django_article.entities_processed = data.get(
                 'entities_processed', django_article.entities_processed)
 
+        django_article.save()
+
         return django_article
 
     class Meta:
