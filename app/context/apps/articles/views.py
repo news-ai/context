@@ -16,8 +16,9 @@ from .serializers import (
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticlerSerializer
     permission_classes = (GeneralPermission,)
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_fields = ('entities_processed',)
+    ordering_fields = ('created_at', 'added_at',)
 
     def get_queryset(self,):
         queryset = Article.objects.all()
