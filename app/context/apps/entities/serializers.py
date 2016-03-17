@@ -85,6 +85,7 @@ class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
             'entity': obj.entity.name,
             'score': obj.score,
             'count': obj.count,
+            'id': obj.pk,
         }
 
     def create(self, data):
