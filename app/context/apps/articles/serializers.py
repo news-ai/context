@@ -94,6 +94,9 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         # Process entity data
         if 'entity_scores' in data:
             entity_ids_seen = []
+
+            # Clear all previous entities seen
+            django_article.entity_scores.clear()
             for entity in data['entity_scores']:
                 if entity.entity.pk not in entity_ids_seen:
                     django_article.entity_scores.add(
