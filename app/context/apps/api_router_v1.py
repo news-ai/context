@@ -11,7 +11,7 @@ from .articles.views import (
     PublisherViewSet,
 )
 
-router = routers.DefaultRouter(trailing_slash=False)
+router = routers.DefaultRouter()
 router.register(r'articles', ArticleViewSet, base_name='article')
 router.register(r'publishers', PublisherViewSet, base_name='publisher')
 router.register(r'feeds', FeedViewSet, base_name='feeds')
