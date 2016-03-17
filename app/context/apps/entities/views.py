@@ -53,7 +53,7 @@ class EntityScoreViewSet(viewsets.ModelViewSet):
     serializer_class = EntityScoreSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('entity__name',)
+    filter_fields = ('entity__name', 'score', 'count',)
 
     def get_queryset(self,):
         queryset = EntityScore.objects.all()
