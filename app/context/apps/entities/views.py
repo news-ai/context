@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 # Third-party app imports
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 
 # Imports from app
+from context.apps.articles.models import Article
+from context.apps.articles.serializers import ArticlerSerializer
 from .models import Type, Entity, EntityScore
 from .permissions import GeneralPermission
 from .serializers import (
@@ -47,6 +51,28 @@ class EntityViewSet(viewsets.ModelViewSet):
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
+
+    @detail_route()
+    def list_articles(self, request, pk=None):
+        single_entity = Entity.objects.filter(pk=pk)[0]
+        if not single_entity:
+            return Response({'detail': "Invalid entity"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        entity_scores = EntityScore.objects.filter(entity=single_entity.pk)
+        if not entity_scores:
+            return Response({'detail': "No articles"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        articles = Article.objects.filter(entity_scores__in=entity_scores)
+        if not articles:
+            return Response({'detail': "No articles"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        article_list = []
+        for article in articles:
+            article_list.append(ArticlerSerializer(article).data)
+        return Response(article_list)
 
 
 class EntityScoreViewSet(viewsets.ModelViewSet):
