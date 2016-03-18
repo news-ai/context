@@ -53,7 +53,7 @@ class EntityViewSet(viewsets.ModelViewSet):
                 return queryset
 
     @detail_route()
-    def list_articles(self, request, pk=None):
+    def articles(self, request, pk=None):
         result = {}
         single_entity = Entity.objects.filter(pk=pk)[0]
         entity_scores = EntityScore.objects.filter(entity=single_entity.pk)
