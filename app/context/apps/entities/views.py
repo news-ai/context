@@ -64,12 +64,15 @@ class EntityViewSet(viewsets.ModelViewSet):
 
             # If we can find an article that matches those entityscores
             if len(articles) > 0:
-                article_list = []
-                for article in articles:
-                    article_list.append(ArticlerSerializer(article).data)
-                result['count'] = len(article_list)
-                result['results'] = article_list
-                return Response(result)
+                page = self.paginate_queryset(articles)
+                if page is not None:
+                    serializers = ArticlerSerializer(
+                        page, many=True, context={'request': request})
+                    return self.get_paginated_response(serializers.data)
+                serializers = ArticlerSerializer(
+                    articles, many=True, context={'request': request})
+                return Response(serializers.data)
+
         # Else return an empty result object
         result['count'] = 0
         result['results'] = []

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Third-party app imports
 from rest_framework import viewsets, filters
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 
 # Imports from app
 from .models import Article, Author, Publisher, PublisherFeed
@@ -78,6 +80,32 @@ class PublisherViewSet(viewsets.ModelViewSet):
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
+
+    @detail_route()
+    def articles(self, request, pk=None):
+        result = {}
+        single_publisher = Publisher.objects.filter(pk=pk)[0]
+
+        # If we can find an publishers that matches that entity
+        if single_publisher is not None:
+            articles = Article.objects.filter(publisher=single_publisher.pk)
+
+            # If we can find an article that matches those publishers.
+            # This does the trick of adding pagination to the mix.
+            if len(articles) > 0:
+                page = self.paginate_queryset(articles)
+                if page is not None:
+                    serializers = ArticlerSerializer(
+                        page, many=True, context={'request': request})
+                    return self.get_paginated_response(serializers.data)
+                serializers = ArticlerSerializer(
+                    articles, many=True, context={'request': request})
+                return Response(serializers.data)
+
+        # Else return an empty result object
+        result['count'] = 0
+        result['results'] = []
+        return Response(result)
 
 
 class AuthorViewSet(viewsets.ModelViewSet):

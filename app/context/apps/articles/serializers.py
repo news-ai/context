@@ -146,7 +146,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Publisher
-        fields = ('name', 'short_name', 'url', 'authors', 'basic_summary',)
+        fields = ('name', 'short_name', 'url',)
 
 
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
