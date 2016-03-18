@@ -28,7 +28,10 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'id': obj.pk,
             'name': obj.name,
             'url': obj.url,
-            'publisher': obj.publisher.name,
+            'publisher': {
+                'id': obj.publisher.pk,
+                'name': obj.publisher.name,
+            },
             'authors': obj.authors.values(),
             'created_at': obj.created_at,
             'header_image': obj.header_image,
