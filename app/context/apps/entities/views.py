@@ -54,25 +54,26 @@ class EntityViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def list_articles(self, request, pk=None):
+        result = {}
         single_entity = Entity.objects.filter(pk=pk)[0]
-        if not single_entity:
-            return Response({'detail': "Invalid entity"},
-                            status=status.HTTP_400_BAD_REQUEST)
-
         entity_scores = EntityScore.objects.filter(entity=single_entity.pk)
-        if not entity_scores:
-            return Response({'detail': "No articles"},
-                            status=status.HTTP_400_BAD_REQUEST)
 
-        articles = Article.objects.filter(entity_scores__in=entity_scores)
-        if not articles:
-            return Response({'detail': "No articles"},
-                            status=status.HTTP_400_BAD_REQUEST)
+        # If we can find an entity score that matches that entity
+        if entity_scores is not None:
+            articles = Article.objects.filter(entity_scores__in=entity_scores)
 
-        article_list = []
-        for article in articles:
-            article_list.append(ArticlerSerializer(article).data)
-        return Response(article_list)
+            # If we can find an article that matches those entityscores
+            if len(articles) > 0:
+                article_list = []
+                for article in articles:
+                    article_list.append(ArticlerSerializer(article).data)
+                result['count'] = len(article_list)
+                result['results'] = article_list
+                return Response(result)
+        # Else return an empty result object
+        result['count'] = 0
+        result['results'] = []
+        return Response(result)
 
 
 class EntityScoreViewSet(viewsets.ModelViewSet):
