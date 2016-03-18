@@ -124,3 +124,29 @@ class AuthorViewSet(viewsets.ModelViewSet):
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
+
+    @detail_route()
+    def articles(self, request, pk=None):
+        result = {}
+        single_author = Author.objects.filter(pk=pk)
+
+        # If we can find an publishers that matches that entity
+        if single_author is not None:
+            articles = Article.objects.filter(authors__in=single_author)
+
+            # If we can find an article that matches those publishers.
+            # This does the trick of adding pagination to the mix.
+            if len(articles) > 0:
+                page = self.paginate_queryset(articles)
+                if page is not None:
+                    serializers = ArticlerSerializer(
+                        page, many=True, context={'request': request})
+                    return self.get_paginated_response(serializers.data)
+                serializers = ArticlerSerializer(
+                    articles, many=True, context={'request': request})
+                return Response(serializers.data)
+
+        # Else return an empty result object
+        result['count'] = 0
+        result['results'] = []
+        return Response(result)
