@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+# Stdlib imports
+import json
+
 # Third-party app imports
+import requests
 from urlparse import urlparse
 from newspaper import Article
 
-import requests
-
+# Imports from app
 from celery import shared_task
 
 
