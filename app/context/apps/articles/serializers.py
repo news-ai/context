@@ -84,7 +84,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                         EntityScore.objects.filter(pk=entity.pk)[0])
 
         celery_app.send_task(
-            'context.apps.articles.utils.post_create_article', (django_article.pk))
+            'context.apps.articles.utils.post_create_article', ([django_article.pk]))
 
         return django_article
 
