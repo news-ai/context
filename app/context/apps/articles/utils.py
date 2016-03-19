@@ -17,14 +17,14 @@ def url_validate(url):
 
 
 @shared_task
-def post_create_article(django_article):
+def post_create_article(django_article_id):
     headers = {
         "content-type": "application/json",
         "accept": "application/json"
     }
 
     payload = {
-        "id": django_article.pk
+        "id": django_article_id
     }
 
     r = requests.post('http://knowledge1.newsai.org/knowledge_server',
