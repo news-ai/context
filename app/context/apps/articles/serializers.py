@@ -82,7 +82,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                     django_article.entity_scores.add(
                         EntityScore.objects.filter(pk=entity.pk)[0])
 
-        # post_create_article.apply_async([django_article])
+        post_create_article.apply_async([django_article])
 
         return django_article
 
