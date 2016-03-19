@@ -27,7 +27,7 @@ def post_create_article(django_article_id):
     }
 
     payload = {
-        "id": django_article_id
+        "id": str(django_article_id)
     }
 
     r = requests.post('http://knowledge1.newsai.org/knowledge_server',
