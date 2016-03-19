@@ -52,10 +52,13 @@ CORS_ORIGIN_WHITELIST = (
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # CELERY SETTINGS
-BROKER_URL = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
+BROKER_URL = 'redis://:QGnC92ym@10.240.0.3:6379/0'
+CELERY_RESULT_BACKEND = 'redis://:QGnC92ym@10.240.0.3:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'UTC'
 
 # Raven for logging
 
