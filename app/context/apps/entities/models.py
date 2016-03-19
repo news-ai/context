@@ -46,5 +46,15 @@ class EntityScore(models.Model):
     score = models.DecimalField(max_digits=9, decimal_places=6)
     count = models.IntegerField(null=True, blank=True)
 
+    def to_json(self):
+        return dict(
+            entity=dict(
+                name=self.entity.name,
+                id=self.entity.pk
+            ),
+            score=self.score,
+            count=self.count
+        )
+
     def __unicode__(self):
         return self.entity.name + ' - ' + str(self.score)

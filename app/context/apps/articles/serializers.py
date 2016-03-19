@@ -36,7 +36,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'created_at': obj.created_at,
             'header_image': obj.header_image,
             'summary': obj.basic_summary,
-            'entity_scores': obj.entity_scores.values(),
+            'entity_scores': [r.to_json() for r in obj.entity_scores.all()],
             'added_at': obj.added_at,
         }
 
