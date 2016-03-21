@@ -97,6 +97,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'header_image', django_article.header_image)
         django_article.created_at = data.get(
             'created_at', django_article.created_at)
+        django_article.is_approved = data.get(
+            'is_approved', django_article.is_approved)
 
         # Process entity data
         if 'entity_scores' in data:
