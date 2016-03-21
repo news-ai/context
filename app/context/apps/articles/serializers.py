@@ -122,7 +122,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         model = Article
         list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
-                  'header_image', 'authors', 'basic_summary', 'entity_scores', 'entities_processed',)
+                  'header_image', 'authors', 'basic_summary', 'entity_scores',
+                  'entities_processed', 'is_approved',)
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
