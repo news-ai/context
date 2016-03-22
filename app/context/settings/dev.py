@@ -1,5 +1,6 @@
 # Imports from app
 from context.settings.common import *
+import .secrets
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -26,6 +27,12 @@ CACHES = {
         'LOCATION': '127.0.0.1:6379',
     },
 }
+
+# Email server
+EMAIL_HOST = 'mailtrap.io'
+EMAIL_HOST_USER = secrets.MAILTRAP_USER
+EMAIL_HOST_PASSWORD = secrets.MAILTRAP_PASSWORD
+EMAIL_PORT = '2525'
 
 # write session information to the database and only load it from the cache
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
