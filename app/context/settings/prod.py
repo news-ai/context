@@ -1,5 +1,6 @@
 # Imports from app
 from context.settings.common import *
+import .secrets
 
 # Third-party app imports
 import raven
@@ -60,8 +61,12 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = 'UTC'
 
-# Raven for logging
+# Email settings
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_ACCESS_KEY_ID = secrets.AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = secrets.AWS_SECRET_ACCESS_KEY
 
+# Raven for logging
 RAVEN_CONFIG = {
     'dsn': 'https://99f7cb4fd29148f783ef5300f867570d:dabc526c069241dd852cc2b756c2cd06@app.getsentry.com/69539',
     # If you are using git, you can also automatically configure the
