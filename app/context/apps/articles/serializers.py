@@ -100,6 +100,12 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         django_article.is_approved = data.get(
             'is_approved', django_article.is_approved)
 
+        # Adding authors into data
+        if 'authors' in data:
+            for author in data['authors']:
+                django_article.authors.add(
+                    Author.objects.filter(pk=author.pk)[0])
+
         # Process entity data
         if 'entity_scores' in data:
             entity_ids_seen = []
