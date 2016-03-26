@@ -1,6 +1,6 @@
 # Imports from app
 from context.settings.common import *
-import .secrets
+import secrets
 
 # Third-party app imports
 import raven

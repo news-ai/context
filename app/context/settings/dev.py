@@ -1,6 +1,6 @@
 # Imports from app
 from context.settings.common import *
-import .secrets
+import secrets
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases

@@ -15,6 +15,8 @@ class Topic(models.Model):
     parent_topic = models.ForeignKey('self', blank=True, null=True)
 
     def __unicode__(self):
+        if self.parent_topic:
+            return ' - '.join((self.parent_topic.name, self.name))
         return self.name
 
 
