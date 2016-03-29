@@ -9,10 +9,9 @@ from django.db import models
 class ArticleManager(models.Manager):
 
     def articles_today_and_approved(self):
-        today = datetime.date.today()
-        return self.filter(added_at__range=(
-            datetime.datetime.combine(today, datetime.time.min),
-            datetime.datetime.combine(today, datetime.time.max)),
-            is_approved=True,
-            entities_processed=True
-        )
+        now = datetime.datetime.now()
+        twelve_hours = now - datetime.timedelta(hours=12)
+        return self.filter(added_at__range=(twelve_hours, now),
+                           is_approved=True,
+                           entities_processed=True
+                           )
