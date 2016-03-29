@@ -3,6 +3,6 @@
 from django.contrib import admin
 
 # Imports from app
-from .models import Timeline
+from .models import Event
 
-admin.site.register(Timeline)
+admin.site.register(Event)
