@@ -45,6 +45,7 @@ CACHES = {
 
 CORS_ORIGIN_WHITELIST = (
     'publisher.newsai.org',
+    'publisher-new.newsai.org',
     'publisher-staging.newsai.org',
     'localhost:8000',
     'localhost:3000'
