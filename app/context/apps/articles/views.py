@@ -33,7 +33,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             if self.request.user and self.request.user.is_staff:
                 return queryset
             else:
-                return []
+                return Article.objects.none()
 
     def get_serializer(self, *args, **kwargs):
         if "data" in kwargs:
@@ -61,7 +61,7 @@ class PublisherFeedViewSet(viewsets.ModelViewSet):
             if self.request.user and self.request.user.is_staff:
                 return queryset
             else:
-                return []
+                return PublisherFeed.objects.none()
 
 
 class PublisherViewSet(viewsets.ModelViewSet):
@@ -80,6 +80,8 @@ class PublisherViewSet(viewsets.ModelViewSet):
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
+            else:
+                return Publisher.objects.none()
 
     @detail_route()
     def articles(self, request, pk=None):
@@ -124,6 +126,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
+            else:
+                return Author.objects.none()
 
     @detail_route()
     def articles(self, request, pk=None):
