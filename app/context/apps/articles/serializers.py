@@ -37,6 +37,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
             'created_at': obj.created_at,
             'header_image': obj.header_image,
             'summary': obj.basic_summary,
+            'opening_paragraph': obj.opening_paragraph,
             'entity_scores': [r.to_json() for r in obj.entity_scores.all()],
             'added_at': obj.added_at,
         }
@@ -59,7 +60,11 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                 data['publisher'] = publisher[
                     0] or Publisher.objects.filter(name="Other")
 
-            data['basic_summary'] = smart_unicode(data['basic_summary'])
+            if 'basic_summary' in data:
+                data['basic_summary'] = smart_unicode(data['basic_summary'])
+            if 'opening_paragraph' in data:
+                data['opening_paragraph'] = smart_unicode(
+                    data['opening_paragraph'])
 
             author_list = None
             entity_list = None
@@ -92,6 +97,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         django_article.name = data.get('name', django_article.name)
         django_article.basic_summary = data.get(
             'basic_summary', django_article.basic_summary)
+        django_article.opening_paragraph = data.get(
+            'opening_paragraph', django_article.opening_paragraph)
         django_article.url = data.get('url', django_article.url)
         django_article.header_image = data.get(
             'header_image', django_article.header_image)
@@ -129,7 +136,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
                   'header_image', 'authors', 'basic_summary', 'entity_scores',
-                  'entities_processed', 'is_approved',)
+                  'entities_processed', 'is_approved', 'opening_paragraph',)
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):

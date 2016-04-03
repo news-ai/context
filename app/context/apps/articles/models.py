@@ -55,6 +55,7 @@ class Author(models.Model):
 class Article(models.Model):
     # Information coming from news-discovery
     name = models.TextField(blank=False, max_length=100)
+    opening_paragraph = models.TextField(blank=True, null=True)
     basic_summary = models.TextField(blank=True, null=True)
     url = models.URLField(blank=False, unique=True, max_length=255)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
