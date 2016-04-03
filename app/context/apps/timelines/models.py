@@ -12,8 +12,8 @@ from context.apps.entities.models import Entity
 
 class Event(models.Model):
     name = models.TextField(blank=False, max_length=100)
-    articles = models.ManyToManyField(Article, blank=True)
     description = models.TextField(blank=True)
+    articles = models.ManyToManyField(Article, blank=True)
     entities = models.ManyToManyField(Entity, blank=True)
     for_country = CountryField(blank_label='(select country)', blank=True)
 

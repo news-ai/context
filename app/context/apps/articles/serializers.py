@@ -161,7 +161,8 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
             'id': obj.pk,
             'name': obj.name,
             'url': obj.url,
-            'publisher': obj.short_name
+            'publisher': obj.short_name,
+            'for_country': obj.for_country.name,
         }
 
     class Meta:
