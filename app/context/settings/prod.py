@@ -80,7 +80,7 @@ RAVEN_CONFIG = {
 }
 
 SWAGGER_SETTINGS = {
-    is_superuser: True
+    'is_superuser': True
 }
 
 LOGGING = {
