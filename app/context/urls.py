@@ -9,6 +9,9 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),
 
+    # Docs
+    url(r'^docs/', include('rest_framework_swagger.urls')),
+
     # API & JSON Web Tokens
     url(r'^api/', include(router.urls)),
     url(r'^api/jwt-token/', 'rest_framework_jwt.views.obtain_jwt_token'),

@@ -79,6 +79,10 @@ RAVEN_CONFIG = {
     'release': raven.fetch_git_sha(os.path.dirname(os.path.dirname(BASE_DIR))),
 }
 
+SWAGGER_SETTINGS = {
+    is_superuser = True
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

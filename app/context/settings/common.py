@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     'django_countries',
     'corsheaders',
     'raven.contrib.django.raven_compat',
+    'rest_framework_swagger',
     'context.apps.users',
     'context.apps.articles',
     'context.apps.timelines',
