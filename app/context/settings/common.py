@@ -32,8 +32,8 @@ INSTALLED_APPS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('NEWSAI_GOOGLE_OAUTH2_CLIENT_ID', '')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv(
     'NEWSAI_GOOGLE_OAUTH2_CLIENT_SECRET', '')
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/api/'
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/api/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://publisher.newsai.org/'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'https://publisher.newsai.org/'
 
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',

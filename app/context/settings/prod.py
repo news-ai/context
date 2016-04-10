@@ -51,6 +51,9 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3000'
 )
 
+# Social Auth
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
 # write session information to the database and only load it from the cache
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
