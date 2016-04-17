@@ -58,7 +58,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'username': obj.username,
             'first_name': obj.first_name,
             'last_name': obj.last_name,
-            'entities': obj.email,
+            'email': obj.email,
             'profile': UserProfileSerializer(UserProfile.objects.get(user=obj)).data
         }
 
