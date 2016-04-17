@@ -34,7 +34,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
                 'id': obj.publisher.pk,
                 'name': obj.publisher.name,
             },
-            'added_by': obj.added_by,
+            'added_by': obj.added_by.pk,
             'authors': obj.authors.values(),
             'created_at': obj.created_at,
             'header_image': obj.header_image,
@@ -69,7 +69,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
                     data['opening_paragraph'])
 
             if 'added_by' in data:
-                added_by = User.objects.filter(pk=data['added_by'])
+                added_by = User.objects.filter(pk=data['added_by'].pk)[0]
                 data['added_by'] = added_by
 
             author_list = None
