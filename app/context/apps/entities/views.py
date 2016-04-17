@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 # Imports from app
 from context.apps.articles.models import Article
-from context.apps.articles.serializers import ArticlerSerializer
+from context.apps.articles.serializers import ArticleSerializer
 from .models import Type, Entity, EntityScore
 from .permissions import GeneralPermission
 from .serializers import (
@@ -66,10 +66,10 @@ class EntityViewSet(viewsets.ModelViewSet):
             if len(articles) > 0:
                 page = self.paginate_queryset(articles)
                 if page is not None:
-                    serializers = ArticlerSerializer(
+                    serializers = ArticleSerializer(
                         page, many=True, context={'request': request})
                     return self.get_paginated_response(serializers.data)
-                serializers = ArticlerSerializer(
+                serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
                 return Response(serializers.data)
 

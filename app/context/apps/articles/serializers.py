@@ -21,7 +21,7 @@ from context.apps.entities.models import EntityScore
 from context.celery import app as celery_app
 
 
-class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
+class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(required=False)
     url = serializers.URLField(required=False)
 

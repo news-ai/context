@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from .models import Article, Author, Publisher, PublisherFeed
 from .permissions import GeneralPermission
 from .serializers import (
-    ArticlerSerializer,
+    ArticleSerializer,
     AuthorSerializer,
     PublisherFeedSerializer,
     PublisherSerializer,
@@ -16,7 +16,7 @@ from .serializers import (
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
-    serializer_class = ArticlerSerializer
+    serializer_class = ArticleSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_fields = ('entities_processed',)
@@ -97,10 +97,10 @@ class PublisherViewSet(viewsets.ModelViewSet):
             if len(articles) > 0:
                 page = self.paginate_queryset(articles)
                 if page is not None:
-                    serializers = ArticlerSerializer(
+                    serializers = ArticleSerializer(
                         page, many=True, context={'request': request})
                     return self.get_paginated_response(serializers.data)
-                serializers = ArticlerSerializer(
+                serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
                 return Response(serializers.data)
 
@@ -143,10 +143,10 @@ class AuthorViewSet(viewsets.ModelViewSet):
             if len(articles) > 0:
                 page = self.paginate_queryset(articles)
                 if page is not None:
-                    serializers = ArticlerSerializer(
+                    serializers = ArticleSerializer(
                         page, many=True, context={'request': request})
                     return self.get_paginated_response(serializers.data)
-                serializers = ArticlerSerializer(
+                serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
                 return Response(serializers.data)
 

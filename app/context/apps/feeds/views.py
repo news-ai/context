@@ -6,11 +6,11 @@ from rest_framework.response import Response
 # Imports from app
 from .permissions import FeedPermission
 from context.apps.articles.models import Article
-from context.apps.articles.serializers import ArticlerSerializer
+from context.apps.articles.serializers import ArticleSerializer
 
 
 class FeedViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = ArticlerSerializer
+    serializer_class = ArticleSerializer
     permission_classes = (FeedPermission,)
 
     def get_queryset(self):
