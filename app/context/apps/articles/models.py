@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Core Django imports
 from django.db import models
+from django.contrib.auth.models import User
 
 # Third-party app imports
 from django_countries.fields import CountryField
@@ -26,6 +27,9 @@ class Publisher(models.Model):
     url = models.URLField(blank=False, unique=True, max_length=255)
     has_paywall = models.BooleanField(blank=False, default=False)
     for_country = CountryField(blank_label='(select country)', blank=True)
+
+    # Extra boolean objects
+    is_approved = models.BooleanField(blank=False, default=False)
 
     def __unicode__(self):
         return self.name
@@ -66,6 +70,9 @@ class Article(models.Model):
     # Meta data about the article
     created_at = models.DateTimeField(blank=True, null=True)
     added_at = models.DateTimeField(blank=False, null=False)
+
+    # User details
+    added_by = models.ForeignKey(User, blank=True, null=True)
 
     # Extra boolean objects
     is_approved = models.BooleanField(blank=False, default=True)

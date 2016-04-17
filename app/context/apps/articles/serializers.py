@@ -4,6 +4,7 @@ import datetime
 
 # Core Django imports
 from django.utils.encoding import smart_str, smart_unicode
+from django.contrib.auth.models import User
 
 # Third-party app imports
 from rest_framework import serializers
@@ -33,6 +34,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                 'id': obj.publisher.pk,
                 'name': obj.publisher.name,
             },
+            'added_by': obj.added_by.pk,
             'authors': obj.authors.values(),
             'created_at': obj.created_at,
             'header_image': obj.header_image,
@@ -66,6 +68,10 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                 data['opening_paragraph'] = smart_unicode(
                     data['opening_paragraph'])
 
+            if 'added_by' in data:
+                added_by = User.objects.filter(pk=data['added_by'])
+                data['added_by'] = added_by
+
             author_list = None
             entity_list = None
             if 'authors' in data:
@@ -88,8 +94,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                     django_article.entity_scores.add(
                         EntityScore.objects.filter(pk=entity.pk)[0])
 
-        celery_app.send_task(
-            'context.apps.articles.utils.post_create_article', ([django_article.pk]))
+            celery_app.send_task(
+                'context.apps.articles.utils.post_create_article', ([django_article.pk]))
 
         return django_article
 
@@ -163,6 +169,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
             'url': obj.url,
             'publisher': obj.short_name,
             'for_country': obj.for_country.name,
+            'is_approved': obj.is_approved,
         }
 
     class Meta:
