@@ -34,7 +34,7 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
                 'id': obj.publisher.pk,
                 'name': obj.publisher.name,
             },
-            'added_by': obj.added_by.pk,
+            'added_by': obj.added_by,
             'authors': obj.authors.values(),
             'created_at': obj.created_at,
             'header_image': obj.header_image,
@@ -142,7 +142,8 @@ class ArticlerSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerial
         list_serializer_class = BulkListSerializer
         fields = ('url', 'name', 'created_at',
                   'header_image', 'authors', 'basic_summary', 'entity_scores',
-                  'entities_processed', 'is_approved', 'opening_paragraph',)
+                  'entities_processed', 'is_approved', 'opening_paragraph',
+                  'added_by',)
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
