@@ -12,6 +12,9 @@ class Feature(models.Model):
     name = models.TextField(blank=False)
     description = models.TextField(blank=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Subscription(models.Model):
     name = models.TextField(blank=False)
