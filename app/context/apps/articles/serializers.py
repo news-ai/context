@@ -34,7 +34,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
                 'id': obj.publisher.pk,
                 'name': obj.publisher.name,
             },
-            'added_by': obj.added_by.pk,
+            'added_by': obj.added_by and obj.added_by.pk,
             'authors': obj.authors.values(),
             'created_at': obj.created_at,
             'header_image': obj.header_image,
