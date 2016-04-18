@@ -16,7 +16,7 @@ from rest_framework_bulk import (
 
 # Imports from app
 from .utils import url_validate, post_create_article
-from .models import Article, Publisher, Author, PublisherFeed
+from .models import Article, Publisher, Author, PublisherFeed, UserArticle
 from context.apps.entities.models import EntityScore
 from context.celery import app as celery_app
 
@@ -154,7 +154,12 @@ class UserArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSer
             'article': obj.article.pk,
             'user': obj.user.pk,
             'starred': obj.starred,
+            'read_later': obj.read_later,
         }
+
+    class Meta:
+        model = UserArticle
+        fields = ('article', 'user', 'starred', 'read_later',)
 
 
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):

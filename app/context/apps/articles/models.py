@@ -89,6 +89,7 @@ class UserArticle(models.Model):
     article = models.ForeignKey(Article)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     starred = models.BooleanField(blank=False, default=False)
+    read_later = models.BooleanField(blank=False, default=False)
 
     def __unicode__(self):
         return ' - '.join((self.article.name, self.user.username))

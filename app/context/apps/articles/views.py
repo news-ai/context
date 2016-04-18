@@ -83,6 +83,40 @@ class ArticleViewSet(viewsets.ModelViewSet):
         }]
         return Response(result, status=status.HTTP_404_NOT_FOUND)
 
+    @never_cache
+    @detail_route()
+    def toggle_read_later(self, request, pk=None):
+        single_article = Article.objects.filter(pk=pk)
+        current_user = request.user
+
+        # If we can find an publishers that matches that entity
+        if len(single_article) > 0 and single_article[0] is not None and current_user:
+            single_article = single_article[0]
+            user_article = UserArticle.objects.filter(
+                article=single_article, user=current_user)
+            if user_article:
+                user_article = user_article[0]
+                user_article.read_later = not user_article.read_later
+                user_article.save()
+            else:
+                data = {}
+                data['article'] = single_article
+                data['user'] = current_user
+                data['read_later'] = True
+                user_article = UserArticle.objects.create(**data)
+            serializers = UserArticleSerializer(
+                user_article, context={'request': request})
+            return Response(serializers.data)
+
+        # Else return an empty result object
+        result = {}
+        result['errors'] = [{
+            'status': '404',
+            'title': 'No matching resource found.',
+            'detail': 'Invalid ID.',
+        }]
+        return Response(result, status=status.HTTP_404_NOT_FOUND)
+
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
     serializer_class = PublisherFeedSerializer
