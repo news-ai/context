@@ -161,6 +161,27 @@ class ArticleViewSet(viewsets.ModelViewSet):
         }]
         return Response(result, status=status.HTTP_401_UNAUTHORIZED)
 
+    @list_route()
+    def added_by(self, request):
+        current_user = request.user
+        if current_user.is_authenticated() and current_user:
+            added_by_articles = Article.objects.filter(added_by=current_user)
+            page = self.paginate_queryset(added_by_articles)
+            if page is not None:
+                serializers = ArticleSerializer(
+                    page, many=True, context={'request': request})
+                return self.get_paginated_response(serializers.data)
+            serializers = ArticleSerializer(
+                added_by_articles, many=True, context={'request': request})
+            return Response(serializers.data)
+        result = {}
+        result['errors'] = [{
+            'status': '401',
+            'title': 'Authentication Required.',
+            'detail': 'Please login.',
+        }]
+        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
     serializer_class = PublisherFeedSerializer
