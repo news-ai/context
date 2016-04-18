@@ -9,4 +9,4 @@ from django.db import models
 class ArticleManager(models.Manager):
 
     def articles_today_and_approved(self):
-        return self.filter(is_approved=True, entities_processed=True).exclude(entity_scores=None).order_by('-added_at')
+        return self.filter(is_approved=True, entities_processed=True, added_by=None).exclude(entity_scores=None).order_by('-added_at')
