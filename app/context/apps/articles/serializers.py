@@ -146,6 +146,17 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
                   'added_by',)
 
 
+class UserArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        return {
+            'id': obj.pk,
+            'article': obj.article.pk,
+            'user': obj.user.pk,
+            'starred': obj.starred,
+        }
+
+
 class PublisherFeedSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):

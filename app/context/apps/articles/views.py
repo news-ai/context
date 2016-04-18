@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
+# Core Django imports
+from django.views.decorators.cache import never_cache
+
 # Third-party app imports
+from rest_framework import status
 from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 # Imports from app
-from .models import Article, Author, Publisher, PublisherFeed
+from .models import Article, Author, Publisher, PublisherFeed, UserArticle
 from .permissions import GeneralPermission
 from .serializers import (
     ArticleSerializer,
     AuthorSerializer,
     PublisherFeedSerializer,
     PublisherSerializer,
+    UserArticleSerializer,
 )
 
 
@@ -43,6 +48,40 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 kwargs["many"] = True
 
         return super(ArticleViewSet, self).get_serializer(*args, **kwargs)
+
+    @never_cache
+    @detail_route()
+    def toggle_star(self, request, pk=None):
+        single_article = Article.objects.filter(pk=pk)
+        current_user = request.user
+
+        # If we can find an publishers that matches that entity
+        if len(single_article) > 0 and single_article[0] is not None and current_user:
+            single_article = single_article[0]
+            user_article = UserArticle.objects.filter(
+                article=single_article, user=current_user)
+            if user_article:
+                user_article = user_article[0]
+                user_article.starred = not user_article.starred
+                user_article.save()
+            else:
+                data = {}
+                data['article'] = single_article
+                data['user'] = current_user
+                data['starred'] = True
+                user_article = UserArticle.objects.create(**data)
+            serializers = UserArticleSerializer(
+                user_article, context={'request': request})
+            return Response(serializers.data)
+
+        # Else return an empty result object
+        result = {}
+        result['errors'] = [{
+            'status': '404',
+            'title': 'No matching resource found.',
+            'detail': 'Invalid ID.',
+        }]
+        return Response(result, status=status.HTTP_404_NOT_FOUND)
 
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
