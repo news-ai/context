@@ -151,7 +151,7 @@ class UserArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSer
     def to_representation(self, obj):
         return {
             'id': obj.pk,
-            'article': obj.article.pk,
+            'article': ArticleSerializer(obj.article).data,
             'user': obj.user.pk,
             'starred': obj.starred,
             'read_later': obj.read_later,

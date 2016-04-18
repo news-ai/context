@@ -5,7 +5,7 @@ from django.views.decorators.cache import never_cache
 # Third-party app imports
 from rest_framework import status
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 
 # Imports from app
@@ -116,6 +116,50 @@ class ArticleViewSet(viewsets.ModelViewSet):
             'detail': 'Invalid ID.',
         }]
         return Response(result, status=status.HTTP_404_NOT_FOUND)
+
+    @list_route()
+    def starred(self, request):
+        current_user = request.user
+        if current_user.is_authenticated() and current_user:
+            starred_articles = UserArticle.objects.filter(
+                user=current_user, starred=True)
+            page = self.paginate_queryset(starred_articles)
+            if page is not None:
+                serializers = UserArticleSerializer(
+                    page, many=True, context={'request': request})
+                return self.get_paginated_response(serializers.data)
+            serializers = UserArticleSerializer(
+                starred_articles, many=True, context={'request': request})
+            return Response(serializers.data)
+        result = {}
+        result['errors'] = [{
+            'status': '401',
+            'title': 'Authentication Required.',
+            'detail': 'Please login.',
+        }]
+        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
+    @list_route()
+    def read_later(self, request):
+        current_user = request.user
+        if current_user.is_authenticated() and current_user:
+            starred_articles = UserArticle.objects.filter(
+                user=current_user, read_later=True)
+            page = self.paginate_queryset(starred_articles)
+            if page is not None:
+                serializers = UserArticleSerializer(
+                    page, many=True, context={'request': request})
+                return self.get_paginated_response(serializers.data)
+            serializers = UserArticleSerializer(
+                starred_articles, many=True, context={'request': request})
+            return Response(serializers.data)
+        result = {}
+        result['errors'] = [{
+            'status': '401',
+            'title': 'Authentication Required.',
+            'detail': 'Please login.',
+        }]
+        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
