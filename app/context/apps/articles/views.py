@@ -122,7 +122,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         current_user = request.user
         if current_user.is_authenticated() and current_user:
             starred_articles = UserArticle.objects.filter(
-                user=current_user, starred=True)
+                user=current_user, starred=True).order_by('-added_at')
             page = self.paginate_queryset(starred_articles)
             if page is not None:
                 serializers = UserArticleSerializer(
@@ -144,7 +144,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         current_user = request.user
         if current_user.is_authenticated() and current_user:
             starred_articles = UserArticle.objects.filter(
-                user=current_user, read_later=True)
+                user=current_user, read_later=True).order_by('-added_at')
             page = self.paginate_queryset(starred_articles)
             if page is not None:
                 serializers = UserArticleSerializer(
@@ -165,7 +165,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
     def added_by(self, request):
         current_user = request.user
         if current_user.is_authenticated() and current_user:
-            added_by_articles = Article.objects.filter(added_by=current_user)
+            added_by_articles = Article.objects.filter(
+                added_by=current_user).order_by('-added_at')
             page = self.paginate_queryset(added_by_articles)
             if page is not None:
                 serializers = ArticleSerializer(
@@ -223,12 +224,12 @@ class PublisherViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
-        result = {}
         single_publisher = Publisher.objects.filter(pk=pk)[0]
 
         # If we can find an publishers that matches that entity
         if single_publisher is not None:
-            articles = Article.objects.filter(publisher=single_publisher.pk)
+            articles = Article.objects.filter(
+                publisher=single_publisher.pk).order_by('-added_at')
 
             # If we can find an article that matches those publishers.
             # This does the trick of adding pagination to the mix.
@@ -243,6 +244,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
+        result = {}
         result['count'] = 0
         result['results'] = []
         return Response(result)
@@ -269,12 +271,12 @@ class AuthorViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
-        result = {}
         single_author = Author.objects.filter(pk=pk)
 
         # If we can find an publishers that matches that entity
         if single_author is not None:
-            articles = Article.objects.filter(authors__in=single_author)
+            articles = Article.objects.filter(
+                authors__in=single_author).order_by('-added_at')
 
             # If we can find an article that matches those publishers.
             # This does the trick of adding pagination to the mix.
@@ -289,6 +291,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
+        result = {}
         result['count'] = 0
         result['results'] = []
         return Response(result)

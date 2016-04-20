@@ -60,7 +60,8 @@ class EntityViewSet(viewsets.ModelViewSet):
 
         # If we can find an entity score that matches that entity
         if entity_scores is not None:
-            articles = Article.objects.filter(entity_scores__in=entity_scores)
+            articles = Article.objects.filter(
+                entity_scores__in=entity_scores).order_by('-added_at')
 
             # If we can find an article that matches those entityscores
             if len(articles) > 0:

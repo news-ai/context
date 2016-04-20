@@ -88,5 +88,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# PyCharm
+
+.idea
+.idea/vcs.xml
+
 # Password file
 secrets.py
