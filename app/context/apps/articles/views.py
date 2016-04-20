@@ -122,7 +122,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         current_user = request.user
         if current_user.is_authenticated() and current_user:
             starred_articles = UserArticle.objects.filter(
-                user=current_user, starred=True).order_by('-added_at')
+                user=current_user, starred=True).order_by('-article__added_at')
             page = self.paginate_queryset(starred_articles)
             if page is not None:
                 serializers = UserArticleSerializer(
@@ -144,7 +144,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         current_user = request.user
         if current_user.is_authenticated() and current_user:
             starred_articles = UserArticle.objects.filter(
-                user=current_user, read_later=True).order_by('-added_at')
+                user=current_user, read_later=True).order_by('-article__added_at')
             page = self.paginate_queryset(starred_articles)
             if page is not None:
                 serializers = UserArticleSerializer(

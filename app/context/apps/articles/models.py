@@ -91,5 +91,8 @@ class UserArticle(models.Model):
     starred = models.BooleanField(blank=False, default=False)
     read_later = models.BooleanField(blank=False, default=False)
 
+    class Meta:
+        ordering = ["article__added_at"]
+
     def __unicode__(self):
         return ' - '.join((self.article.name, self.user.username))
