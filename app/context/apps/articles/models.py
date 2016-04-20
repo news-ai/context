@@ -14,6 +14,7 @@ from context.apps.entities.models import Entity, EntityScore
 class Topic(models.Model):
     name = models.TextField(blank=False, max_length=100)
     parent_topic = models.ForeignKey('self', blank=True, null=True)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
         if self.parent_topic:
@@ -27,6 +28,7 @@ class Publisher(models.Model):
     url = models.URLField(blank=False, unique=True, max_length=255)
     has_paywall = models.BooleanField(blank=False, default=False)
     for_country = CountryField(blank_label='(select country)', blank=True)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     # Extra boolean objects
     is_approved = models.BooleanField(blank=False, default=False)
@@ -40,6 +42,7 @@ class PublisherFeed(models.Model):
     feed_url = models.URLField(blank=False, unique=True, max_length=255)
     tags = models.TextField(blank=True)
     topic = models.ForeignKey(Topic, blank=True, null=True)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
         if self.publisher:
@@ -51,6 +54,7 @@ class PublisherFeed(models.Model):
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
     writes_for = models.ManyToManyField(Publisher, blank=True)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -81,6 +85,9 @@ class Article(models.Model):
 
     objects = ArticleManager()
 
+    class Meta:
+        ordering = ["added_at"]
+
     def __unicode__(self):
         return self.name
 
@@ -90,6 +97,7 @@ class UserArticle(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     starred = models.BooleanField(blank=False, default=False)
     read_later = models.BooleanField(blank=False, default=False)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         ordering = ["article__added_at"]
