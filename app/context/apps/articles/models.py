@@ -86,7 +86,7 @@ class Article(models.Model):
     objects = ArticleManager()
 
     class Meta:
-        ordering = ["added_at"]
+        ordering = ["-added_at"]
 
     def __unicode__(self):
         return self.name
@@ -100,7 +100,16 @@ class UserArticle(models.Model):
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
-        ordering = ["article__added_at"]
+        ordering = ["-article__added_at"]
+
+    def __unicode__(self):
+        return ' - '.join((self.article.name, self.user.username))
+
+
+class UserPublisher(models.Model):
+    publisher = models.ForeignKey(Publisher)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    following = models.BooleanField(blank=False, default=False)
 
     def __unicode__(self):
         return ' - '.join((self.article.name, self.user.username))
