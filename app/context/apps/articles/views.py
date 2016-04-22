@@ -9,7 +9,7 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 
 # Imports from app
-from .models import Article, Author, Publisher, PublisherFeed, UserArticle
+from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher
 from .permissions import GeneralPermission
 from .serializers import (
     ArticleSerializer,
@@ -17,6 +17,7 @@ from .serializers import (
     PublisherFeedSerializer,
     PublisherSerializer,
     UserArticleSerializer,
+    UserPublisherSerializer,
 )
 
 
@@ -248,6 +249,40 @@ class PublisherViewSet(viewsets.ModelViewSet):
         result['count'] = 0
         result['results'] = []
         return Response(result)
+
+    @never_cache
+    @detail_route()
+    def follow(self, request, pk=None):
+        single_publisher = Publisher.objects.filter(pk=pk)
+        current_user = request.user
+
+        # If we can find an publishers that matches that entity
+        if len(single_publisher) > 0 and single_publisher[0] is not None and current_user:
+            single_publisher = single_publisher[0]
+            user_publisher = UserPublisher.objects.filter(
+                publisher=single_publisher, user=current_user)
+            if user_publisher:
+                user_publisher = user_publisher[0]
+                user_publisher.following = not user_publisher.following
+                user_publisher.save()
+            else:
+                data = {}
+                data['publisher'] = single_publisher
+                data['user'] = current_user
+                data['following'] = True
+                user_publisher = UserPublisher.objects.create(**data)
+            serializers = UserPublisherSerializer(
+                user_publisher, context={'request': request})
+            return Response(serializers.data)
+
+        # Else return an empty result object
+        result = {}
+        result['errors'] = [{
+            'status': '404',
+            'title': 'No matching resource found.',
+            'detail': 'Invalid ID.',
+        }]
+        return Response(result, status=status.HTTP_404_NOT_FOUND)
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
