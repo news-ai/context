@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import list_route
 
 # Imports from app
+from context.apps.general.errors import HTTP_401_UNAUTHORIZED
 from .serializers import UserSerializer
 from .permissions import UserPermission
 
@@ -33,7 +34,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @list_route()
     def me(self, request):
-        if self.request and self.request.user:
-            return Response(UserSerializer(get_object_or_404(User, pk=self.request.user.pk)).data)
+        current_user = self.request.user
+
+        if current_user.is_authenticated() and current_user:
+            return Response(UserSerializer(current_user).data)
         else:
-            return User.objects.none()
+            return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)

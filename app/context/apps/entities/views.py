@@ -5,6 +5,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 # Imports from app
+from context.apps.general.errors import HTTP_404_NOT_FOUND
 from context.apps.articles.models import Article
 from context.apps.articles.serializers import ArticleSerializer
 from .models import Type, Entity, EntityScore
@@ -75,9 +76,7 @@ class EntityViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
-        result['count'] = 0
-        result['results'] = []
-        return Response(result)
+        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
 
 
 class EntityScoreViewSet(viewsets.ModelViewSet):
