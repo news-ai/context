@@ -7,7 +7,7 @@ class FeedPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         # If user is only trying to do GET, HEAD, or OPTIONS
-        if request.method in permissions.SAFE_METHODS:
+        if request.method in permissions.SAFE_METHODS and request.user and request.user.is_authenticated():
             return True
         elif request.method == 'DELETE':
             return False
