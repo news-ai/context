@@ -35,8 +35,14 @@ class ArticleViewSet(viewsets.ModelViewSet):
         uid = self.kwargs.get('pk', None)
         if len(queryset) is 0:
             return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
+        # Makes sure that the id that the user has entered is of an integer
+        # value.
+        elif uid and isinstance(uid, int):
+            article = queryset.filter(pk=uid)
+            if article:
+                return article
+            else:
+                return Article.objects.none()
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
