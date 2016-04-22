@@ -25,7 +25,9 @@ class UserViewSet(viewsets.ModelViewSet):
         if len(queryset) is 0:
             return queryset
         else:
-            if self.request.user and self.request.user.is_staff:
+            current_user = self.request.user
+
+            if current_user.is_authenticated() and current_user.is_staff:
                 if uid:
                     return queryset.filter(pk=uid)
                 return queryset
