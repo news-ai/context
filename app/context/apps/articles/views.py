@@ -5,10 +5,12 @@ from django.views.decorators.cache import never_cache
 # Third-party app imports
 from rest_framework import status
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 
 # Imports from app
+from context.apps.general.errors import HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher
 from .permissions import GeneralPermission
 from .serializers import (
@@ -57,7 +59,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         current_user = request.user
 
         # If we can find an publishers that matches that entity
-        if len(single_article) > 0 and single_article[0] is not None and current_user:
+        if len(single_article) > 0 and single_article[0] is not None and current_user.is_authenticated() and current_user:
             single_article = single_article[0]
             user_article = UserArticle.objects.filter(
                 article=single_article, user=current_user)
@@ -76,13 +78,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else return an empty result object
-        result = {}
-        result['errors'] = [{
-            'status': '404',
-            'title': 'No matching resource found.',
-            'detail': 'Invalid ID.',
-        }]
-        return Response(result, status=status.HTTP_404_NOT_FOUND)
+        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
     @never_cache
     @detail_route()
@@ -91,7 +87,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         current_user = request.user
 
         # If we can find an publishers that matches that entity
-        if len(single_article) > 0 and single_article[0] is not None and current_user:
+        if len(single_article) > 0 and single_article[0] is not None and current_user.is_authenticated() and current_user:
             single_article = single_article[0]
             user_article = UserArticle.objects.filter(
                 article=single_article, user=current_user)
@@ -110,13 +106,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else return an empty result object
-        result = {}
-        result['errors'] = [{
-            'status': '404',
-            'title': 'No matching resource found.',
-            'detail': 'Invalid ID.',
-        }]
-        return Response(result, status=status.HTTP_404_NOT_FOUND)
+        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
     @list_route()
     def starred(self, request):
@@ -132,13 +122,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
             serializers = UserArticleSerializer(
                 starred_articles, many=True, context={'request': request})
             return Response(serializers.data)
-        result = {}
-        result['errors'] = [{
-            'status': '401',
-            'title': 'Authentication Required.',
-            'detail': 'Please login.',
-        }]
-        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Else the user is not logged in -- throw an error
+        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
     @list_route()
     def read_later(self, request):
@@ -154,13 +140,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
             serializers = UserArticleSerializer(
                 starred_articles, many=True, context={'request': request})
             return Response(serializers.data)
-        result = {}
-        result['errors'] = [{
-            'status': '401',
-            'title': 'Authentication Required.',
-            'detail': 'Please login.',
-        }]
-        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Else the user is not logged in -- throw an error
+        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
     @list_route()
     def added_by(self, request):
@@ -176,13 +158,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
             serializers = ArticleSerializer(
                 added_by_articles, many=True, context={'request': request})
             return Response(serializers.data)
-        result = {}
-        result['errors'] = [{
-            'status': '401',
-            'title': 'Authentication Required.',
-            'detail': 'Please login.',
-        }]
-        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Else the user is not logged in -- throw an error
+        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
@@ -245,10 +223,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
-        result = {}
-        result['count'] = 0
-        result['results'] = []
-        return Response(result)
+        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
 
     @never_cache
     @detail_route()
@@ -257,10 +232,16 @@ class PublisherViewSet(viewsets.ModelViewSet):
         current_user = request.user
 
         # If we can find an publishers that matches that entity
-        if len(single_publisher) > 0 and single_publisher[0] is not None and current_user:
+        if (len(single_publisher) > 0 and
+                single_publisher[0] is not None and
+                current_user.is_authenticated() and
+                current_user):
             single_publisher = single_publisher[0]
             user_publisher = UserPublisher.objects.filter(
                 publisher=single_publisher, user=current_user)
+
+            # If the user has already started following the publisher,
+            # and the instance already exists.
             if user_publisher:
                 user_publisher = user_publisher[0]
                 user_publisher.following = not user_publisher.following
@@ -276,17 +257,12 @@ class PublisherViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else return an empty result object
-        result = {}
-        result['errors'] = [{
-            'status': '404',
-            'title': 'No matching resource found.',
-            'detail': 'Invalid ID.',
-        }]
-        return Response(result, status=status.HTTP_404_NOT_FOUND)
+        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
 
     @list_route()
     def following(self, request):
         current_user = request.user
+
         if current_user.is_authenticated() and current_user:
             starred_articles = UserPublisher.objects.filter(
                 user=current_user, following=True).order_by('-publisher_id')
@@ -298,13 +274,9 @@ class PublisherViewSet(viewsets.ModelViewSet):
             serializers = UserPublisherSerializer(
                 starred_articles, many=True, context={'request': request})
             return Response(serializers.data)
-        result = {}
-        result['errors'] = [{
-            'status': '401',
-            'title': 'Authentication Required.',
-            'detail': 'Please login.',
-        }]
-        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Else we return an error.
+        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
@@ -348,7 +320,4 @@ class AuthorViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
-        result = {}
-        result['count'] = 0
-        result['results'] = []
-        return Response(result)
+        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
