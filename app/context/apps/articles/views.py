@@ -284,6 +284,28 @@ class PublisherViewSet(viewsets.ModelViewSet):
         }]
         return Response(result, status=status.HTTP_404_NOT_FOUND)
 
+    @list_route()
+    def following(self, request):
+        current_user = request.user
+        if current_user.is_authenticated() and current_user:
+            starred_articles = UserPublisher.objects.filter(
+                user=current_user, following=True).order_by('-publisher_id')
+            page = self.paginate_queryset(starred_articles)
+            if page is not None:
+                serializers = UserPublisherSerializer(
+                    page, many=True, context={'request': request})
+                return self.get_paginated_response(serializers.data)
+            serializers = UserPublisherSerializer(
+                starred_articles, many=True, context={'request': request})
+            return Response(serializers.data)
+        result = {}
+        result['errors'] = [{
+            'status': '401',
+            'title': 'Authentication Required.',
+            'detail': 'Please login.',
+        }]
+        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class AuthorViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorSerializer
