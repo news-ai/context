@@ -20,19 +20,8 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self,):
-        queryset = User.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        else:
-            current_user = self.request.user
-
-            if current_user.is_authenticated() and current_user.is_staff:
-                if uid:
-                    return queryset.filter(pk=uid)
-                return queryset
-            else:
-                return User.objects.none()
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, User, uid)
 
     @list_route()
     def me(self, request):
