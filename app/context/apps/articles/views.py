@@ -120,6 +120,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         # Else the user is not logged in -- throw an error
         return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
+    @never_cache
     @list_route()
     def read_later(self, request):
         current_user = request.user
@@ -138,6 +139,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         # Else the user is not logged in -- throw an error
         return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
+    @never_cache
     @list_route()
     def added_by(self, request):
         current_user = request.user
