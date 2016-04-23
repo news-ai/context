@@ -41,13 +41,10 @@ class ArticleViewSet(viewsets.ModelViewSet):
             article = queryset.filter(pk=uid)
             if article:
                 return article
-            else:
-                return Article.objects.none()
         else:
             if self.request.user and self.request.user.is_staff:
                 return queryset
-            else:
-                return Article.objects.none()
+        return Article.objects.none()
 
     def get_serializer(self, *args, **kwargs):
         if "data" in kwargs:
