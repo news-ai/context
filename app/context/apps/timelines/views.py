@@ -4,6 +4,7 @@ from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
 
 # Imports from app
+from context.apps.general.views import general_response
 from .serializers import EventSerializer
 from .permissions import EventPermission
 from .models import Event
@@ -16,14 +17,5 @@ class EventViewSet(viewsets.ModelViewSet):
     filter_fields = ('name', 'description',)
 
     def get_queryset(self,):
-        queryset = Event.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
-            else:
-                return Event.objects.none()
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, Event, uid)

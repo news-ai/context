@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 # Imports from app
 from context.apps.general.errors import HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
+from context.apps.general.views import general_response
 from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher
 from .permissions import GeneralPermission
 from .serializers import (
@@ -31,20 +32,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
     ordering_fields = ('created_at', 'added_at',)
 
     def get_queryset(self,):
-        queryset = Article.objects.all()
         uid = self.kwargs.get('pk', None)
-        if len(queryset) is 0:
-            return queryset
-        # Makes sure that the id that the user has entered is of an integer
-        # value.
-        elif uid and isinstance(uid, int):
-            article = queryset.filter(pk=uid)
-            if article:
-                return article
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
-        return Article.objects.none()
+        return general_response(self.request, Article, uid)
 
     def get_serializer(self, *args, **kwargs):
         if "data" in kwargs:
@@ -172,17 +161,8 @@ class PublisherFeedViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self,):
-        queryset = PublisherFeed.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
-            else:
-                return PublisherFeed.objects.none()
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, PublisherFeed, uid)
 
 
 class PublisherViewSet(viewsets.ModelViewSet):
@@ -192,17 +172,8 @@ class PublisherViewSet(viewsets.ModelViewSet):
     filter_fields = ('name', 'short_name', 'url',)
 
     def get_queryset(self,):
-        queryset = Publisher.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
-            else:
-                return Publisher.objects.none()
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, Publisher, uid)
 
     @detail_route()
     def articles(self, request, pk=None):
@@ -289,17 +260,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
     filter_fields = ('name', 'writes_for__url')
 
     def get_queryset(self,):
-        queryset = Author.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
-            else:
-                return Author.objects.none()
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, Author, uid)
 
     @detail_route()
     def articles(self, request, pk=None):

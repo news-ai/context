@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 # Imports from app
 from context.apps.general.errors import HTTP_404_NOT_FOUND
+from context.apps.general.views import general_response
 from context.apps.articles.models import Article
 from context.apps.articles.serializers import ArticleSerializer
 from .models import Type, Entity, EntityScore
@@ -24,15 +25,8 @@ class TypeViewSet(viewsets.ModelViewSet):
     filter_fields = ('name', 'description', 'parent_type__name')
 
     def get_queryset(self,):
-        queryset = Type.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, Type, uid)
 
 
 class EntityViewSet(viewsets.ModelViewSet):
@@ -43,15 +37,8 @@ class EntityViewSet(viewsets.ModelViewSet):
                      'main_type__name', 'sub_types__name',)
 
     def get_queryset(self,):
-        queryset = Entity.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, Entity, uid)
 
     @detail_route()
     def articles(self, request, pk=None):
@@ -86,12 +73,5 @@ class EntityScoreViewSet(viewsets.ModelViewSet):
     filter_fields = ('entity__name', 'score', 'count',)
 
     def get_queryset(self,):
-        queryset = EntityScore.objects.all()
-        uid = self.kwargs.get('pk')
-        if len(queryset) is 0:
-            return queryset
-        elif uid:
-            return queryset.filter(pk=uid)
-        else:
-            if self.request.user and self.request.user.is_staff:
-                return queryset
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, EntityScore, uid)
