@@ -110,6 +110,7 @@ class UserPublisher(models.Model):
     publisher = models.ForeignKey(Publisher)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     following = models.BooleanField(blank=False, default=False)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
         return ' - '.join((self.article.name, self.user.username))

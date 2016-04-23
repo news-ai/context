@@ -27,6 +27,15 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
     url = serializers.URLField(required=False)
 
     def to_representation(self, obj):
+        current_user = self.context and self.context[
+            'request'] and self.context['request'].user
+        user_article = None
+
+        if current_user:
+            user_articles = UserArticle.objects.filter(
+                user=current_user, article=obj)
+            if len(user_articles) is 1:
+                user_article = user_articles[0]
         return {
             'id': obj.pk,
             'name': obj.name,
@@ -43,6 +52,8 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
             'opening_paragraph': obj.opening_paragraph,
             'entity_scores': [r.to_json() for r in obj.entity_scores.all()],
             'added_at': obj.added_at,
+            'starred': user_article and user_article.starred,
+            'read_later': user_article and user_article.read_later,
         }
 
     # Defining behavior of when a new Article is added
@@ -150,13 +161,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
 class UserArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):
-        return {
-            'id': obj.pk,
-            'article': ArticleSerializer(obj.article).data,
-            'user': obj.user.pk,
-            'starred': obj.starred,
-            'read_later': obj.read_later,
-        }
+        return ArticleSerializer(obj.article, context=self.context).data
 
     class Meta:
         model = UserArticle

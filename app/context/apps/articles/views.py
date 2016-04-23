@@ -65,6 +65,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 data['user'] = current_user
                 data['starred'] = True
                 user_article = UserArticle.objects.create(**data)
+
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
             return Response(serializers.data)
@@ -100,6 +101,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         # Else return an empty result object
         return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
 
+    @never_cache
     @list_route()
     def starred(self, request):
         current_user = request.user
