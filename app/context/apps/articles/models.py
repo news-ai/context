@@ -69,6 +69,9 @@ class Article(models.Model):
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author, blank=True)
     header_image = models.URLField(blank=True, null=True, max_length=255)
+    publisher_feed = models.ForeignKey(PublisherFeed, blank=False, null=True, on_delete=models.CASCADE)
+
+    # Information coming from knowledge
     entity_scores = models.ManyToManyField(EntityScore, blank=True)
 
     # Meta data about the article

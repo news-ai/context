@@ -12,7 +12,7 @@ from rest_framework.response import Response
 # Imports from app
 from context.apps.general.errors import HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from context.apps.general.views import general_response
-from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher
+from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher, Topic
 from .permissions import GeneralPermission
 from .serializers import (
     ArticleSerializer,
@@ -21,6 +21,7 @@ from .serializers import (
     PublisherSerializer,
     UserArticleSerializer,
     UserPublisherSerializer,
+    TopicSerializer,
 )
 
 
@@ -289,4 +290,23 @@ class AuthorViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
+        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
+
+
+class TopicViewSet(viewsets.ModelViewSet):
+    serializer_class = TopicSerializer
+    permission_classes = (GeneralPermission,)
+    filter_backends = (filters.DjangoFilterBackend,)
+
+    def get_queryset(self,):
+        uid = self.kwargs.get('pk', None)
+        return general_response(self.request, Topic, uid)
+
+    @detail_route()
+    def articles(self, request, pk=None):
+        publisher_feeds = PublisherFeed.objects.filter(topic=pk)
+
+        if publisher_feeds is not None:
+            print publisher_feeds
+
         return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
