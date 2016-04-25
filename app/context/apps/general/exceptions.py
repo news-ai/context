@@ -13,12 +13,13 @@ from django.utils import six, encoding
 from django.utils.translation import ugettext_lazy as _
 
 # Third-party app imports
+import inflection
 from rest_framework import status, exceptions
 
 
 def format_value(value, format_type=None):
     if format_type is None:
-        format_type = getattr(settings, 'JSON_API_FORMAT_KEYS', False)
+        format_type = getattr(settings, 'CONTEXT_FORMAT_KEYS', False)
     if format_type == 'dasherize':
         # inflection can't dasherize camelCase
         value = inflection.underscore(value)
@@ -72,8 +73,8 @@ def format_errors(response, context, exc):
 
 
 def exception_handler(exc, context):
-    from rest_framework.views import exception_handler as drf_exception_handler
-    response = drf_exception_handler(exc, context)
+    from rest_framework.views import exception_handler as context_exception_handler
+    response = context_exception_handler(exc, context)
 
     if not response:
         return response
