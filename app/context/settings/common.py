@@ -109,6 +109,7 @@ USE_L10N = True
 USE_TZ = False
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'context.apps.general.exceptions.exception_handler',
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAdminUser'
     ],
