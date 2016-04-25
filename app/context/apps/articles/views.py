@@ -182,10 +182,12 @@ class PublisherViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
-        single_publisher = Publisher.objects.filter(pk=pk)[0]
+        single_publisher = Publisher.objects.filter(pk=pk)
 
         # If we can find an publishers that matches that entity
-        if single_publisher is not None:
+        if len(single_publisher) > 0 and single_publisher[0] is not None:
+            single_publisher = single_publisher[0]
+
             articles = Article.objects.filter(
                 publisher=single_publisher.pk).order_by('-added_at')
 
