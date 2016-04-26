@@ -68,7 +68,9 @@ def format_errors(response, context, exc):
                 })
 
     context['view'].resource_name = 'errors'
-    response.data = errors
+    response.data = {
+        "errors": errors
+    }
     return response
 
 
