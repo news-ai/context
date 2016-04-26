@@ -37,19 +37,23 @@ def format_value(value, format_type=None):
     return value
 
 
+def format_error(detail, status):
+    return {
+        'detail': detail,
+        'status': encoding.force_text(status),
+        'title': detail_to_title[str(status)] if str(status) in detail_to_title else '',
+        'source': {
+            'pointer': '/api'
+        }
+    }
+
+
 def format_errors(response, context, exc):
     errors = []
     # handle generic errors. ValidationError('test') in a view for example
     if isinstance(response.data, list):
         for message in response.data:
-            errors.append({
-                'detail': message,
-                'status': encoding.force_text(response.status_code),
-                'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
-                'source': {
-                    'pointer': '/api'
-                }
-            })
+            errors.append(format_error(message, response.status_code))
     # handle all errors thrown from serializers
     else:
         for field, error in response.data.items():
@@ -59,36 +63,15 @@ def format_errors(response, context, exc):
                 errors.append(error)
             elif isinstance(error, six.string_types):
                 classes = inspect.getmembers(exceptions, inspect.isclass)
-                errors.append({
-                    'detail': error,
-                    'status': encoding.force_text(response.status_code),
-                    'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
-                    'source': {
-                        'pointer': '/api'
-                    }
-                })
+                errors.append(format_error(error, response.status_code))
             elif isinstance(error, list):
                 for message in error:
-                    errors.append({
-                        'detail': message,
-                        'status': encoding.force_text(response.status_code),
-                        'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
-                        'source': {
-                            'pointer': '/api'
-                        }
-                    })
+                    errors.append(format_error(message, response.status_code))
             else:
-                errors.append({
-                    'detail': error,
-                    'status': encoding.force_text(response.status_code),
-                    'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
-                    'source': {
-                        'pointer': '/api'
-                    }
-                })
+                errors.append(format_error(error, response.status_code))
 
     response.data = {
-        "errors": errors
+        'errors': errors
     }
 
     return response
