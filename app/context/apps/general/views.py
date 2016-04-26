@@ -7,7 +7,7 @@ def general_response(request, base_model, uid):
         return queryset
     # Makes sure that the id that the user has entered is of an integer
     # value.
-    elif uid and isinstance(uid, int):
+    elif uid and (isinstance(uid, unicode) or isinstance(uid, int)):
         resource = base_model.objects.filter(pk=uid)
         if resource:
             return resource
