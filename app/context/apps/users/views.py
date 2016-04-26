@@ -10,6 +10,7 @@ from rest_framework.decorators import list_route
 from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 # Imports from app
+from context.apps.general.views import general_response
 from .serializers import UserSerializer
 from .permissions import UserPermission
 
