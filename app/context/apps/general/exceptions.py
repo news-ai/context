@@ -46,6 +46,9 @@ def format_errors(response, context, exc):
                 'detail': message,
                 'status': encoding.force_text(response.status_code),
                 'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
+                'source': {
+                    'pointer': '/api'
+                }
             })
     # handle all errors thrown from serializers
     else:
@@ -60,6 +63,9 @@ def format_errors(response, context, exc):
                     'detail': error,
                     'status': encoding.force_text(response.status_code),
                     'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
+                    'source': {
+                        'pointer': '/api'
+                    }
                 })
             elif isinstance(error, list):
                 for message in error:
@@ -67,17 +73,24 @@ def format_errors(response, context, exc):
                         'detail': message,
                         'status': encoding.force_text(response.status_code),
                         'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
+                        'source': {
+                            'pointer': '/api'
+                        }
                     })
             else:
                 errors.append({
                     'detail': error,
                     'status': encoding.force_text(response.status_code),
                     'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
+                    'source': {
+                        'pointer': '/api'
+                    }
                 })
 
     response.data = {
         "errors": errors
     }
+
     return response
 
 
