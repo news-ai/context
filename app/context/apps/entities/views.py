@@ -3,9 +3,9 @@
 from rest_framework import viewsets, filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 # Imports from app
-from context.apps.general.errors import HTTP_404_NOT_FOUND
 from context.apps.general.views import general_response
 from context.apps.articles.models import Article
 from context.apps.articles.serializers import ArticleSerializer
@@ -63,7 +63,7 @@ class EntityViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
-        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
+        raise NotFound()
 
 
 class EntityScoreViewSet(viewsets.ModelViewSet):

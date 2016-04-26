@@ -1,4 +1,8 @@
-from rest_framework.exceptions import PermissionDenied, NotAuthenticated, NotFound
+# -*- coding: utf-8 -*-
+
+# Third-party app imports
+from rest_framework import status
+from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 
 def general_response(request, base_model, uid):
@@ -13,10 +17,10 @@ def general_response(request, base_model, uid):
             if resource:
                 return resource
             else:
-                raise NotFound("No matching resource found.")
+                raise NotFound()
         else:
             if request.user.is_staff:
                 return queryset
             else:
-                raise PermissionDenied("Forbidden.")
-    raise NotAuthenticated("Authentication Required.")
+                raise PermissionDenied()
+    raise NotAuthenticated()

@@ -8,6 +8,7 @@
 import inspect
 
 # Core Django imports
+from django.utils.encoding import force_text
 from django.conf import settings
 from django.utils import six, encoding
 from django.utils.translation import ugettext_lazy as _
@@ -15,6 +16,9 @@ from django.utils.translation import ugettext_lazy as _
 # Third-party app imports
 import inflection
 from rest_framework import status, exceptions
+
+# Imports from app
+from .errors import detail_to_title
 
 
 def format_value(value, format_type=None):
@@ -41,6 +45,7 @@ def format_errors(response, context, exc):
             errors.append({
                 'detail': message,
                 'status': encoding.force_text(response.status_code),
+                'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
             })
     # handle all errors thrown from serializers
     else:
@@ -54,20 +59,22 @@ def format_errors(response, context, exc):
                 errors.append({
                     'detail': error,
                     'status': encoding.force_text(response.status_code),
+                    'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
                 })
             elif isinstance(error, list):
                 for message in error:
                     errors.append({
                         'detail': message,
                         'status': encoding.force_text(response.status_code),
+                        'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
                     })
             else:
                 errors.append({
                     'detail': error,
                     'status': encoding.force_text(response.status_code),
+                    'title': detail_to_title[str(response.status_code)] if str(response.status_code) in detail_to_title else '',
                 })
 
-    context['view'].resource_name = 'errors'
     response.data = {
         "errors": errors
     }
@@ -80,4 +87,5 @@ def exception_handler(exc, context):
 
     if not response:
         return response
+
     return format_errors(response, context, exc)

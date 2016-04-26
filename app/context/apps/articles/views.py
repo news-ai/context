@@ -3,14 +3,13 @@
 from django.views.decorators.cache import never_cache
 
 # Third-party app imports
-from rest_framework import status
-from rest_framework import viewsets, filters
+from rest_framework import status, viewsets, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 # Imports from app
-from context.apps.general.errors import HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from context.apps.general.views import general_response
 from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher, Topic
 from .permissions import GeneralPermission
@@ -72,7 +71,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else return an empty result object
-        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+        raise NotAuthenticated()
 
     @never_cache
     @detail_route()
@@ -100,7 +99,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else return an empty result object
-        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+        raise NotAuthenticated()
 
     @never_cache
     @list_route()
@@ -119,7 +118,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
-        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+        raise NotAuthenticated()
 
     @never_cache
     @list_route()
@@ -138,7 +137,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
-        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+        raise NotAuthenticated()
 
     @never_cache
     @list_route()
@@ -157,7 +156,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
-        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+        raise NotAuthenticated()
 
 
 class PublisherFeedViewSet(viewsets.ModelViewSet):
@@ -204,7 +203,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
-        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
+        raise NotFound()
 
     @never_cache
     @detail_route()
@@ -238,7 +237,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else return an empty result object
-        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
+        raise NotFound()
 
     @list_route()
     def following(self, request):
@@ -257,7 +256,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
             return Response(serializers.data)
 
         # Else we return an error.
-        return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+        raise NotAuthenticated()
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
@@ -292,7 +291,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
                 return Response(serializers.data)
 
         # Else return an empty result object
-        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
+        raise NotFound()
 
 
 class TopicViewSet(viewsets.ModelViewSet):
@@ -311,4 +310,4 @@ class TopicViewSet(viewsets.ModelViewSet):
         if publisher_feeds is not None:
             print publisher_feeds
 
-        return Response(HTTP_404_NOT_FOUND(), status=status.HTTP_404_NOT_FOUND)
+        raise NotFound()

@@ -1,21 +1,12 @@
 # -*- coding: utf-8 -*-
-def HTTP_ERROR_BASE(status, title, detail):
-    result = {}
-    result['errors'] = [{
-        'status': status,
-        'title': title,
-        'detail': detail,
-    }]
-    return result
+# Core Django imports
+from django.utils.translation import ugettext_lazy as _
 
+# Third-party app imports
+from rest_framework import status
+from rest_framework.exceptions import APIException
 
-def HTTP_401_UNAUTHORIZED():
-    return HTTP_ERROR_BASE('401', 'Authentication Required.', 'Please login.')
-
-
-def HTTP_403_FORBIDDEN():
-    return HTTP_ERROR_BASE('403', 'Forbidden.', 'Invalid permissions.')
-
-
-def HTTP_404_NOT_FOUND():
-    return HTTP_ERROR_BASE('404', 'No matching resource found.', 'Invalid ID.')
+detail_to_title = {}
+detail_to_title['401'] = 'Please login.'
+detail_to_title['403'] = 'Invalid permissions.'
+detail_to_title['404'] = 'Invalid ID.'

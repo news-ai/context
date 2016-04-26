@@ -7,9 +7,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
 from rest_framework.decorators import list_route
+from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 # Imports from app
-from context.apps.general.errors import HTTP_401_UNAUTHORIZED
 from .serializers import UserSerializer
 from .permissions import UserPermission
 
@@ -30,4 +30,4 @@ class UserViewSet(viewsets.ModelViewSet):
         if current_user.is_authenticated() and current_user:
             return Response(UserSerializer(current_user).data)
         else:
-            return Response(HTTP_401_UNAUTHORIZED(), status=status.HTTP_401_UNAUTHORIZED)
+            raise NotAuthenticated
