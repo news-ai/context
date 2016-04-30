@@ -6,6 +6,7 @@ import secrets
 import raven
 
 DEBUG = False
+APPEND_SLASH = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
