@@ -20,7 +20,7 @@ ALLOWED_HOSTS = [
 ]
 
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
-    'rest_framework.renderers.JSONRenderer',
+    'drf_ujson.renderers.UJSONRenderer',
 )
 
 DATABASES = {
