@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^docs/', include('rest_framework_swagger.urls')),
 
     # API & JSON Web Tokens
-    url(r'^api/', include(router.urls)),
+    url(r'^api/', include(router.urls, namespace='v1')),
     url(r'^v1/api/', include(router.urls)),
     url(r'^api/jwt-token/', 'rest_framework_jwt.views.obtain_jwt_token'),
     url(r'^api/jwt-token-refresh/', 'rest_framework_jwt.views.refresh_jwt_token'),

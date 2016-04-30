@@ -191,7 +191,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
             'name': obj.name,
             'url': obj.url,
             'publisher': obj.short_name,
-            'for_country': obj.for_country.name,
+            'for_country': obj.for_country.name if obj.for_country else '',
             'is_approved': obj.is_approved,
         }
 
