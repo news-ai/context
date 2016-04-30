@@ -10,13 +10,17 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    '104.196.8.167',
+    '104.196.123.85',
+    '104.196.112.67',
+    '104.196.112.253',
     '.newsai.org',
     '.newsai.org.',
     '.context.newsai.org',
     '.context.newsai.org.',
     '.internal.newsai.org',
     '.internal.newsai.org.',
+    '.publisher.newsai.org',
+    '.publisher.newsai.org.',
 ]
 
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
