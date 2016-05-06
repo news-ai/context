@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Core Django imports
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Type(models.Model):
@@ -38,6 +39,16 @@ class Entity(models.Model):
 
     class Meta:
         verbose_name_plural = "entities"
+
+
+class UserEntity(models.Model):
+    entity = models.ForeignKey(Entity)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    following = models.BooleanField(blank=False, default=False)
+    added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __unicode__(self):
+        return ' - '.join((self.entity.name, self.user.username))
 
 
 class EntityScore(models.Model):

@@ -69,7 +69,8 @@ class Article(models.Model):
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     authors = models.ManyToManyField(Author, blank=True)
     header_image = models.URLField(blank=True, null=True, max_length=255)
-    publisher_feed = models.ForeignKey(PublisherFeed, blank=False, null=True, on_delete=models.CASCADE)
+    publisher_feed = models.ForeignKey(
+        PublisherFeed, blank=False, null=True, on_delete=models.CASCADE)
 
     # Information coming from knowledge
     entity_scores = models.ManyToManyField(EntityScore, blank=True)
@@ -116,4 +117,4 @@ class UserPublisher(models.Model):
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
-        return ' - '.join((self.article.name, self.user.username))
+        return ' - '.join((self.publisher.name, self.user.username))
