@@ -216,10 +216,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
         single_publisher = Publisher.objects.filter(pk=pk)
 
         # If we can find an publishers that matches that entity
-        if (len(single_publisher) > 0 and
-                single_publisher[0] is not None and
-                current_user.is_authenticated() and
-                current_user):
+        if len(single_publisher) > 0 and single_publisher[0] is not None:
             single_publisher = single_publisher[0]
             user_publisher = UserPublisher.objects.filter(
                 publisher=single_publisher, user=current_user)

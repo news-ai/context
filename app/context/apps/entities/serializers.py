@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # Imports from app
-from .models import Type, Entity, EntityScore
+from .models import Type, Entity, EntityScore, UserEntity
 
 
 class TypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -76,6 +76,21 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
         model = Entity
         fields = ('name', 'description', 'main_type', 'sub_types', 'website',
                   'yago', 'freebase', 'dbpedia', 'geonames', 'geo_lat', 'geo_long')
+
+
+class UserEntitySerializer(serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        return {
+            'id': obj.pk,
+            'entity': EntitySerializer(obj.entity).data,
+            'user': obj.user.pk,
+            'following': obj.following,
+        }
+
+    class Meta:
+        model = UserEntity
+        fields = ('entity', 'user', 'following',)
 
 
 class EntityScoreSerializer(serializers.HyperlinkedModelSerializer):
