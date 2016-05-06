@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 # Imports from app
-from context.apps.general.views import general_response
+from context.apps.general.views import general_response, permission_required
 from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher, Topic
 from .permissions import GeneralPermission
 from .serializers import (
@@ -181,6 +181,8 @@ class PublisherViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
+        permission_required(request.user)
+
         single_publisher = Publisher.objects.filter(pk=pk)
 
         # If we can find an publishers that matches that entity
@@ -208,8 +210,10 @@ class PublisherViewSet(viewsets.ModelViewSet):
     @never_cache
     @detail_route()
     def follow(self, request, pk=None):
-        single_publisher = Publisher.objects.filter(pk=pk)
         current_user = request.user
+        permission_required(current_user)
+
+        single_publisher = Publisher.objects.filter(pk=pk)
 
         # If we can find an publishers that matches that entity
         if (len(single_publisher) > 0 and

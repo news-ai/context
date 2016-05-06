@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
 # Imports from app
-from context.apps.general.views import general_response
+from context.apps.general.views import general_response, permission_required
 from context.apps.articles.models import Article
 from context.apps.articles.serializers import ArticleSerializer
 from .models import Type, Entity, EntityScore
@@ -42,6 +42,8 @@ class EntityViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
+        permission_required(request.user)
+
         articles = None
         if ',' in pk:
             id_list = pk.split(',')

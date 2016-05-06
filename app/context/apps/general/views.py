@@ -21,3 +21,8 @@ def general_response(request, base_model, uid):
             else:
                 raise PermissionDenied()
     raise NotAuthenticated()
+
+
+def permission_required(current_user):
+    if not current_user.is_authenticated():
+        raise NotAuthenticated()
