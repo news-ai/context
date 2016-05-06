@@ -42,19 +42,24 @@ class EntityViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
+        articles = None
         if ',' in pk:
             id_list = pk.split(',')
+            # Edge case if a user does '1,' as ID or '1,2,3,'
+            if id_list[-1] == '':
+                del id_list[-1]
+
             entities = Entity.objects.filter(pk__in=id_list)
-            entity_scores = EntityScore.objects.filter(entity__in=entities)
+            articles = Article.objects.filter(
+                entity_scores__entity__in=entities).order_by('-added_at')
         else:
-            single_entity = Entity.objects.filter(pk=pk)[0]
-            entity_scores = EntityScore.objects.filter(entity=single_entity.pk)
+            single_entity = Entity.objects.filter(pk=pk)
+            if single_entity is not None and len(single_entity) > 0:
+                articles = Article.objects.filter(
+                    entity_scores__entity__in=single_entity).order_by('-added_at')
 
         # If we can find an entity score that matches that entity
-        if entity_scores is not None:
-            articles = Article.objects.filter(
-                entity_scores__in=entity_scores).order_by('-added_at')
-
+        if articles is not None:
             # If we can find an article that matches those entityscores
             if len(articles) > 0:
                 page = self.paginate_queryset(articles)
