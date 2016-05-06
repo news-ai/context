@@ -49,12 +49,23 @@ class EntityViewSet(viewsets.ModelViewSet):
             if id_list[-1] == '':
                 del id_list[-1]
 
-            entities = Entity.objects.filter(pk__in=id_list)
-            articles = Article.objects.filter(
-                entity_scores__entity__in=entities).order_by('-added_at')
+            # Try catch is to stop from having ID being something like '1,2,g,'
+            try:
+                entities = Entity.objects.filter(pk__in=id_list)
+                articles = Article.objects.filter(
+                    entity_scores__entity=entities[0])
+                for entity in entities:
+                    articles = articles.filter(entity_scores__entity=entity)
+                articles = articles.order_by('-added_at')
+            except:
+                raise NotFound("The ID list has an invalid ID type.")
         else:
-            single_entity = Entity.objects.filter(pk=pk)
+            try:
+                single_entity = Entity.objects.filter(pk=pk)
+            except:
+                raise NotFound("The ID is an invalid ID type.")
             if single_entity is not None and len(single_entity) > 0:
+                # Try catch is to stop from having ID being something like 'g'
                 articles = Article.objects.filter(
                     entity_scores__entity__in=single_entity).order_by('-added_at')
 
