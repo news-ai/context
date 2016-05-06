@@ -42,9 +42,13 @@ class EntityViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def articles(self, request, pk=None):
-        result = {}
-        single_entity = Entity.objects.filter(pk=pk)[0]
-        entity_scores = EntityScore.objects.filter(entity=single_entity.pk)
+        if ',' in pk:
+            id_list = pk.split(',')
+            entities = Entity.objects.filter(pk__in=id_list)
+            entity_scores = EntityScore.objects.filter(entity__in=entities)
+        else:
+            single_entity = Entity.objects.filter(pk=pk)[0]
+            entity_scores = EntityScore.objects.filter(entity=single_entity.pk)
 
         # If we can find an entity score that matches that entity
         if entity_scores is not None:
