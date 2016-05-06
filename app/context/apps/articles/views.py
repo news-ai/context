@@ -240,6 +240,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
         # Else return an empty result object
         raise NotFound()
 
+    @never_cache
     @list_route()
     def following(self, request):
         current_user = request.user

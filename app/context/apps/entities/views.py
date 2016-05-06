@@ -4,7 +4,7 @@ from django.views.decorators.cache import never_cache
 
 # Third-party app imports
 from rest_framework import viewsets, filters, status
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
 
@@ -120,6 +120,26 @@ class EntityViewSet(viewsets.ModelViewSet):
 
         # Else return an empty result object
         raise NotFound()
+
+    @never_cache
+    @list_route()
+    def following(self, request):
+        current_user = request.user
+
+        if current_user.is_authenticated() and current_user:
+            following_entities = UserEntity.objects.filter(
+                user=current_user, following=True).order_by('-entity_id')
+            page = self.paginate_queryset(following_entities)
+            if page is not None:
+                serializers = UserEntitySerializer(
+                    page, many=True, context={'request': request})
+                return self.get_paginated_response(serializers.data)
+            serializers = UserEntitySerializer(
+                following_entities, many=True, context={'request': request})
+            return Response(serializers.data)
+
+        # Else we return an error.
+        raise NotAuthenticated()
 
 
 class EntityScoreViewSet(viewsets.ModelViewSet):
