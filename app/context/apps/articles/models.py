@@ -101,6 +101,7 @@ class UserArticle(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     starred = models.BooleanField(blank=False, default=False)
     read_later = models.BooleanField(blank=False, default=False)
+    reported = models.BooleanField(blank=False, default=False)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
