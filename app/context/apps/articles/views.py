@@ -28,7 +28,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
-    filter_fields = ('entities_processed',)
+    filter_fields = ('entities_processed', 'entity_scores', 'entity_scores__entity', 'entity_scores__entity__name',)
     ordering_fields = ('created_at', 'added_at',)
 
     def get_queryset(self,):
