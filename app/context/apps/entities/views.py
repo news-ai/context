@@ -45,9 +45,8 @@ class EntityViewSet(viewsets.ModelViewSet):
         return general_response(self.request, Entity, uid)
 
     @detail_route()
+    @permission_required
     def articles(self, request, pk=None):
-        permission_required(request.user)
-
         articles = None
         if ',' in pk:
             id_list = pk.split(',')
@@ -93,10 +92,8 @@ class EntityViewSet(viewsets.ModelViewSet):
 
     @never_cache
     @detail_route()
+    @permission_required
     def follow(self, request, pk=None):
-        current_user = request.user
-        permission_required(current_user)
-
         single_entity = Entity.objects.filter(pk=pk)
 
         if len(single_entity) > 0 and single_entity[0] is not None:

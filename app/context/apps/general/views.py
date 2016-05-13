@@ -23,6 +23,11 @@ def general_response(request, base_model, uid):
     raise NotAuthenticated()
 
 
-def permission_required(current_user):
-    if not current_user.is_authenticated():
-        raise NotAuthenticated()
+def permission_required(func):
+    def permission(*args, **kwargs):
+        request = args[1]
+        current_user = request.user
+        if not current_user.is_authenticated():
+            raise NotAuthenticated()
+        return func(*args, **kwargs)
+    return permission
