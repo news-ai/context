@@ -12,7 +12,7 @@ class TypeSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         return {
             'id': obj.pk,
-            'name': split_uppercase(obj.name),
+            'name': obj.name,
             'description': obj.description,
             'parent_type': obj.parent_type.name if obj.parent_type else obj.parent_type,
         }
