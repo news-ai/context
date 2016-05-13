@@ -5,7 +5,11 @@ from rest_framework import routers
 from .feeds.views import FeedViewSet
 from .timelines.views import EventViewSet
 from .users.views import UserViewSet
-from .entities.views import TypeViewSet, EntityViewSet, EntityScoreViewSet
+from .entities.views import (
+    TypeViewSet,
+    EntityViewSet,
+    EntityScoreViewSet,
+)
 from .articles.views import (
     ArticleViewSet,
     AuthorViewSet,

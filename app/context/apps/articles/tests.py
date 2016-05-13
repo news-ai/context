@@ -4,7 +4,11 @@ from django.contrib.auth.models import User
 
 # Third-party app imports
 from rest_framework import status
-from rest_framework.test import APITestCase, APIRequestFactory, force_authenticate
+from rest_framework.test import (
+    APITestCase,
+    APIRequestFactory,
+    force_authenticate,
+)
 
 # Imports from app
 from .views import PublisherViewSet

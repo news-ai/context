@@ -124,6 +124,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    'DEFAULT_ETAG_FUNC': 'rest_framework_extensions.utils.default_etag_func',
 }
 
 JWT_AUTH = {
