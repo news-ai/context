@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 # Imports from app
 from .models import Type, Entity, EntityScore, UserEntity
+from .utils import split_uppercase
 
 
 class TypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,7 +12,7 @@ class TypeSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         return {
             'id': obj.pk,
-            'name': obj.name,
+            'name': split_uppercase(obj.name),
             'description': obj.description,
             'parent_type': obj.parent_type.name if obj.parent_type else obj.parent_type,
         }
@@ -41,7 +42,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
             'id': obj.pk,
             'name': obj.name,
             'description': obj.description,
-            'main_type': obj.main_type.name,
+            'main_type': split_uppercase(obj.main_type.name),
             'sub_types': obj.sub_types.values(),
             'website': obj.website,
             'yago': obj.yago,
