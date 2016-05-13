@@ -28,6 +28,10 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
     'drf_ujson.renderers.UJSONRenderer',
 )
 
+REST_FRAMEWORK['DEFAULT_PARSER_CLASSES'] = (
+    'drf_ujson.parsers.UJSONParser',
+)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
