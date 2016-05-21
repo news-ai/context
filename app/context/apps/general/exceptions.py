@@ -8,14 +8,12 @@
 import inspect
 
 # Core Django imports
-from django.utils.encoding import force_text
-from django.conf import settings
+import django.conf
 from django.utils import six, encoding
-from django.utils.translation import ugettext_lazy as _
 
 # Third-party app imports
 import inflection
-from rest_framework import status, exceptions
+from rest_framework import exceptions
 
 # Imports from app
 from .errors import detail_to_title
@@ -23,7 +21,7 @@ from .errors import detail_to_title
 
 def format_value(value, format_type=None):
     if format_type is None:
-        format_type = getattr(settings, 'CONTEXT_FORMAT_KEYS', False)
+        format_type = getattr(django.conf.settings, 'CONTEXT_FORMAT_KEYS', False)
     if format_type == 'dasherize':
         # inflection can't dasherize camelCase
         value = inflection.underscore(value)

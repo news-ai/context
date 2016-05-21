@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 # Core Django imports
-from django.views.decorators.cache import never_cache
+import django.views.decorators.cache
 
 # Third-party app imports
-from rest_framework import status, viewsets, filters
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route, list_route
-from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied, NotFound, NotAuthenticated
+import rest_framework.response
+from rest_framework.exceptions import NotFound, NotAuthenticated
 
 # Imports from app
 from context.apps.general.views import general_response, permission_required
@@ -44,14 +43,15 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         return super(ArticleViewSet, self).get_serializer(*args, **kwargs)
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @detail_route()
+    @permission_required
     def toggle_star(self, request, pk=None):
         single_article = Article.objects.filter(pk=pk)
         current_user = request.user
 
         # If we can find an publishers that matches that entity
-        if len(single_article) > 0 and single_article[0] is not None and current_user.is_authenticated() and current_user:
+        if len(single_article) > 0 and single_article[0] is not None:
             single_article = single_article[0]
             user_article = UserArticle.objects.filter(
                 article=single_article, user=current_user)
@@ -60,27 +60,25 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 user_article.starred = not user_article.starred
                 user_article.save()
             else:
-                data = {}
-                data['article'] = single_article
-                data['user'] = current_user
-                data['starred'] = True
+                data = {'article': single_article, 'user': current_user, 'starred': True}
                 user_article = UserArticle.objects.create(**data)
 
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else return an empty result object
-        raise NotAuthenticated()
+        raise NotFound()
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @detail_route()
+    @permission_required
     def toggle_read_later(self, request, pk=None):
         single_article = Article.objects.filter(pk=pk)
         current_user = request.user
 
         # If we can find an publishers that matches that entity
-        if len(single_article) > 0 and single_article[0] is not None and current_user.is_authenticated() and current_user:
+        if len(single_article) > 0 and single_article[0] is not None:
             single_article = single_article[0]
             user_article = UserArticle.objects.filter(
                 article=single_article, user=current_user)
@@ -89,26 +87,24 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 user_article.read_later = not user_article.read_later
                 user_article.save()
             else:
-                data = {}
-                data['article'] = single_article
-                data['user'] = current_user
-                data['read_later'] = True
+                data = {'article': single_article, 'user': current_user, 'read_later': True}
                 user_article = UserArticle.objects.create(**data)
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else return an empty result object
-        raise NotAuthenticated()
+        raise NotFound()
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @detail_route()
+    @permission_required
     def report(self, request, pk=None):
         single_article = Article.objects.filter(pk=pk)
         current_user = request.user
 
         # If we can find an publishers that matches that entity
-        if len(single_article) > 0 and single_article[0] is not None and current_user.is_authenticated() and current_user:
+        if len(single_article) > 0 and single_article[0] is not None:
             single_article = single_article[0]
             user_article = UserArticle.objects.filter(
                 article=single_article, user=current_user)
@@ -117,38 +113,33 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 user_article.report = not user_article.report
                 user_article.save()
             else:
-                data = {}
-                data['article'] = single_article
-                data['user'] = current_user
-                data['report'] = True
+                data = {'article': single_article, 'user': current_user, 'report': True}
                 user_article = UserArticle.objects.create(**data)
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else return an empty result object
-        raise NotAuthenticated()
+        raise NotFound()
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @list_route()
+    @permission_required
     def starred(self, request):
         current_user = request.user
-        if current_user.is_authenticated() and current_user:
-            starred_articles = UserArticle.objects.filter(
-                user=current_user, starred=True).order_by('-article__added_at')
-            page = self.paginate_queryset(starred_articles)
-            if page is not None:
-                serializers = UserArticleSerializer(
-                    page, many=True, context={'request': request})
-                return self.get_paginated_response(serializers.data)
+
+        starred_articles = UserArticle.objects.filter(
+            user=current_user, starred=True).order_by('-article__added_at')
+        page = self.paginate_queryset(starred_articles)
+        if page is not None:
             serializers = UserArticleSerializer(
-                starred_articles, many=True, context={'request': request})
-            return Response(serializers.data)
+                page, many=True, context={'request': request})
+            return self.get_paginated_response(serializers.data)
+        serializers = UserArticleSerializer(
+            starred_articles, many=True, context={'request': request})
+        return rest_framework.response.Response(serializers.data)
 
-        # Else the user is not logged in -- throw an error
-        raise NotAuthenticated()
-
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @list_route()
     def read_later(self, request):
         current_user = request.user
@@ -162,12 +153,12 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 return self.get_paginated_response(serializers.data)
             serializers = UserArticleSerializer(
                 starred_articles, many=True, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
         raise NotAuthenticated()
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @list_route()
     def added_by(self, request):
         current_user = request.user
@@ -181,7 +172,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 return self.get_paginated_response(serializers.data)
             serializers = ArticleSerializer(
                 added_by_articles, many=True, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
         raise NotAuthenticated()
@@ -229,12 +220,12 @@ class PublisherViewSet(viewsets.ModelViewSet):
                     return self.get_paginated_response(serializers.data)
                 serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
-                return Response(serializers.data)
+                return rest_framework.response.Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @detail_route()
     @permission_required
     def follow(self, request, pk=None):
@@ -260,12 +251,12 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 user_publisher = UserPublisher.objects.create(**data)
             serializers = UserPublisherSerializer(
                 user_publisher, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
 
-    @never_cache
+    @django.views.decorators.cache.never_cache
     @list_route()
     def following(self, request):
         current_user = request.user
@@ -280,7 +271,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 return self.get_paginated_response(serializers.data)
             serializers = UserPublisherSerializer(
                 starred_articles, many=True, context={'request': request})
-            return Response(serializers.data)
+            return rest_framework.response.Response(serializers.data)
 
         # Else we return an error.
         raise NotAuthenticated()
@@ -315,7 +306,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
                     return self.get_paginated_response(serializers.data)
                 serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
-                return Response(serializers.data)
+                return rest_framework.response.Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()

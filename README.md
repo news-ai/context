@@ -34,6 +34,18 @@ To setup `redis` follow [this](http://redis.io/topics/quickstart) guide or `brew
 
 We use [Fabric](http://fabfile.org/) for deployments. [Here](https://micropyramid.com/blog/automate-django-deployments-with-fabfile/) is a tutorial.
 
+### Docker
+
+Setup using [this](https://github.com/SykoTheKiD/DockerDjangoRest) tutorial.
+
+1. `docker-machine start default`
+2. `docker-machine env`
+3. `eval $(docker-machine env)`
+4. `docker-compose build`
+5. `docker-compose up`
+6. "Go to your docker machine's IP address and you should see your app"
+7. "If the CSS isn't loading run docker-compose run app /usr/local/bin/python manage.py collectstatic and then reload"
+
 ### Notes
 
 - End user can only access the `feeds` API endpoint, which has IDs to articles/timelines/etc.

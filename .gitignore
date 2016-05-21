@@ -2,9 +2,10 @@
 __pycache__/
 *.py[cod]
 
+# Django/Docker
 nohup.out
-
 static_serve
+.env
 
 # C extensions
 *.so
