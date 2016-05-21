@@ -5,7 +5,7 @@ import django.views.decorators.cache
 # Third-party app imports
 from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route, list_route
-import rest_framework.response
+from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, NotAuthenticated
 
 # Imports from app
@@ -27,7 +27,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
-    filter_fields = ('entities_processed', 'entity_scores', 'entity_scores__entity', 'entity_scores__entity__name',)
+    filter_fields = ('entities_processed', 'entity_scores',
+                     'entity_scores__entity', 'entity_scores__entity__name',)
     ordering_fields = ('created_at', 'added_at',)
 
     def get_queryset(self,):
@@ -60,12 +61,13 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 user_article.starred = not user_article.starred
                 user_article.save()
             else:
-                data = {'article': single_article, 'user': current_user, 'starred': True}
+                data = {'article': single_article,
+                        'user': current_user, 'starred': True}
                 user_article = UserArticle.objects.create(**data)
 
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
@@ -87,11 +89,12 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 user_article.read_later = not user_article.read_later
                 user_article.save()
             else:
-                data = {'article': single_article, 'user': current_user, 'read_later': True}
+                data = {'article': single_article,
+                        'user': current_user, 'read_later': True}
                 user_article = UserArticle.objects.create(**data)
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
@@ -113,11 +116,12 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 user_article.report = not user_article.report
                 user_article.save()
             else:
-                data = {'article': single_article, 'user': current_user, 'report': True}
+                data = {'article': single_article,
+                        'user': current_user, 'report': True}
                 user_article = UserArticle.objects.create(**data)
             serializers = UserArticleSerializer(
                 user_article, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
@@ -137,7 +141,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializers.data)
         serializers = UserArticleSerializer(
             starred_articles, many=True, context={'request': request})
-        return rest_framework.response.Response(serializers.data)
+        return Response(serializers.data)
 
     @django.views.decorators.cache.never_cache
     @list_route()
@@ -153,7 +157,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 return self.get_paginated_response(serializers.data)
             serializers = UserArticleSerializer(
                 starred_articles, many=True, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
         raise NotAuthenticated()
@@ -172,7 +176,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
                 return self.get_paginated_response(serializers.data)
             serializers = ArticleSerializer(
                 added_by_articles, many=True, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else the user is not logged in -- throw an error
         raise NotAuthenticated()
@@ -220,7 +224,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                     return self.get_paginated_response(serializers.data)
                 serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
-                return rest_framework.response.Response(serializers.data)
+                return Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
@@ -251,7 +255,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 user_publisher = UserPublisher.objects.create(**data)
             serializers = UserPublisherSerializer(
                 user_publisher, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()
@@ -271,7 +275,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
                 return self.get_paginated_response(serializers.data)
             serializers = UserPublisherSerializer(
                 starred_articles, many=True, context={'request': request})
-            return rest_framework.response.Response(serializers.data)
+            return Response(serializers.data)
 
         # Else we return an error.
         raise NotAuthenticated()
@@ -306,7 +310,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
                     return self.get_paginated_response(serializers.data)
                 serializers = ArticleSerializer(
                     articles, many=True, context={'request': request})
-                return rest_framework.response.Response(serializers.data)
+                return Response(serializers.data)
 
         # Else return an empty result object
         raise NotFound()

@@ -46,6 +46,20 @@ Setup using [this](https://github.com/SykoTheKiD/DockerDjangoRest) tutorial.
 6. "Go to your docker machine's IP address and you should see your app"
 7. "If the CSS isn't loading run docker-compose run app /usr/local/bin/python manage.py collectstatic and then reload"
 
+### MySQL dump
+
+1. `mysqldump -uroot -p context -r context.sql`
+
+### Running tests
+
+1. `CONTEXT_ENVIRONMENT=test ./manage.py reset_db`
+2. Create database `context_test`: `CREATE DATABASE context_test`
+3. Do a MySQL dump
+4. `mysql -uroot -p;`
+5. `USE context_test`
+6. `SOURCE context.sql;`
+7. `CONTEXT_ENVIRONMENT=test ./manage.py test`
+
 ### Notes
 
 - End user can only access the `feeds` API endpoint, which has IDs to articles/timelines/etc.
