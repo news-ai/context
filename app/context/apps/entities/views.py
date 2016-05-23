@@ -94,6 +94,7 @@ class EntityViewSet(viewsets.ModelViewSet):
     @detail_route()
     @permission_required
     def follow(self, request, pk=None):
+        current_user = request.user
         single_entity = Entity.objects.filter(pk=pk)
 
         if len(single_entity) > 0 and single_entity[0] is not None:
