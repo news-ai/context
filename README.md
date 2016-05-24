@@ -8,11 +8,7 @@ We utilize [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/lates
 
 Then go ahead and run `pip install -r requirements.txt` to install the dependencies.
 
-On our development environment we use Postgres. Install Postgres through either [Postgres.app](http://postgresapp.com/) or [Postgresql.org](http://www.postgresql.org/download/).
-
-After installing Postgres in `psql` run `CREATE USER context WITH PASSWORD 'LnmEksnM36uPHG';`, and then run `CREATE DATABASE context OWNER context;`.
-
-Also setup the test database: run `ALTER USER context CREATEDB;`, `CREATE DATABASE test_context OWNER context;`. To run tests you can simply do `./manage.py test`.
+On our development environment we use MySQL. After installing MySQL in `mysql -u root -p` run `CREATE DATABASE context`. You have to set the MySQL password to the password in `settings/dev.py`.
 
 Then you can run `./manage.py migrate`, and `./manage.py runserver`.
 
@@ -59,6 +55,10 @@ Setup using [this](https://github.com/SykoTheKiD/DockerDjangoRest) tutorial.
 5. `USE context_test`
 6. `SOURCE context.sql;`
 7. `CONTEXT_ENVIRONMENT=test ./manage.py test`
+
+### Stack
+
+- Mail: Amazon SES/Sendgrid on production and Mailtrap on development
 
 ### Notes
 
