@@ -119,3 +119,9 @@ class UserPublisher(models.Model):
 
     def __unicode__(self):
         return ' - '.join((self.publisher.name, self.user.username))
+
+
+class UserPublisherFeed(models.Model):
+    publisher = models.ForeignKey(PublisherFeed)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    active = models.BooleanField(blank=False, default=True)

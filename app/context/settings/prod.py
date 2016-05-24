@@ -81,13 +81,16 @@ CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = 'UTC'
 
 # Email settings
-EMAIL_BACKEND = 'django_ses.SESBackend'
-AWS_ACCESS_KEY_ID = secrets.AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY = secrets.AWS_SECRET_ACCESS_KEY
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = secrets.SENDGRID_USERNAME
+EMAIL_HOST_PASSWORD = secrets.AWS_SECRET_ACCESS_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Raven for logging
 RAVEN_CONFIG = {
-    'dsn': 'https://99f7cb4fd29148f783ef5300f867570d:dabc526c069241dd852cc2b756c2cd06@app.getsentry.com/69539',
+    'dsn': 'https://' + secrets.SENTRY_USERNAME + ':' + secrets.SENTRY_PASSWORD
+    + '@app.getsentry.com/' + secrets.SENTRY_ACCOUNTID,
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     'release': raven.fetch_git_sha(os.path.dirname(os.path.dirname(BASE_DIR))),
