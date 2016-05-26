@@ -20,7 +20,7 @@ def post_create_article(django_article_id):
         "id": str(django_article_id)
     }
 
-    r = requests.post('http://knowledge1.newsai.org/knowledge_server',
+    r = requests.post('https://knowledge1.newsai.org/knowledge_server',
                       headers=headers, data=json.dumps(payload), verify=False)
 
     if r.status_code == 200:
