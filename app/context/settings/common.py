@@ -43,14 +43,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.auth_allowed',
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
-    # 'social.pipeline.mail.mail_validation',
-    # 'social.pipeline.social_auth.associate_by_email',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
     'context.apps.users.utils.check_company_auth',
-    'context.apps.users.utils.send_welcome_email',
+    # 'context.apps.users.utils.send_welcome_email',
 )
 
 AUTHENTICATION_BACKENDS = (

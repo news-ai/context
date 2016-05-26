@@ -28,7 +28,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_fields = ('entities_processed', 'entity_scores',
-                     'entity_scores__entity', 'entity_scores__entity__name',)
+                     'entity_scores__entity', 'entity_scores__entity__name',
+                     'url', 'name',)
     ordering_fields = ('created_at', 'added_at',)
 
     def get_queryset(self,):

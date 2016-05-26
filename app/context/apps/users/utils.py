@@ -36,7 +36,6 @@ def check_company_auth(strategy, details, user=None, *args, **kwargs):
 
 
 def send_welcome_email(strategy, details, user=None, is_new=False, *args, **kwargs):
-    print is_new
     if is_new:
         full_name = ' '.join((details['first_name'], details['last_name']))
         email = details['email']
