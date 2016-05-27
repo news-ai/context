@@ -61,6 +61,8 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
         # Get Publisher and validate URL
         publisher = None
         if 'url' in data:
+            # Standardize the end strip
+            data['url'] = data['url'].strip('/')
             data['url'], publisher = url_validate(data['url'])
 
         try:

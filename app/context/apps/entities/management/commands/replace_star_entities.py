@@ -12,7 +12,6 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         # Clean the star entities
         entities = Entity.objects.filter(name__contains='★')
-        print len(entities)
         for entity in entities:
             entity.name = entity.name[1:].strip()
             entity.save()
