@@ -56,6 +56,10 @@ Setup using [this](https://github.com/SykoTheKiD/DockerDjangoRest) tutorial.
 6. `SOURCE context.sql;`
 7. `CONTEXT_ENVIRONMENT=test ./manage.py test`
 
+### Deployment
+
+Run `fab APP_DOMAIN deploy`
+
 ### Stack
 
 - Mail: Amazon SES/Sendgrid on production and Mailtrap on development
