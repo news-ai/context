@@ -234,6 +234,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
     @detail_route()
     @permission_required
     def follow(self, request, pk=None):
+        current_user = request.user
         single_publisher = Publisher.objects.filter(pk=pk)
 
         # If we can find an publishers that matches that entity

@@ -68,6 +68,10 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
         except Article.DoesNotExist:
             django_article = None
 
+        # If a person is trying to add an article that already exists
+        if django_article and 'added_by' in data:
+            added_by = User.objects.filter(pk=data['added_by'].pk)[0]
+
         if not django_article:
             if publisher:
                 publisher = Publisher.objects.filter(url=publisher)
