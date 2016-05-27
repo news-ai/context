@@ -13,5 +13,6 @@ class Command(NoArgsCommand):
         entities = Entity.objects.filter(name__iregex=r'^[a-z]+$')
         for entity in entities:
             if entity.name.islower():
+                print entity.name
                 entity.name = entity.name.title()
                 entity.save()
