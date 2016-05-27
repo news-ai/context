@@ -52,6 +52,6 @@ def deploy():
             run('echo yes | python manage.py collectstatic')
             run('supervisorctl reread')
             run('supervisorctl update')
-            run('supervisorctl restart context-celery gunicorn')
+            run('supervisorctl restart gunicorn')
 
 # Source: https://gist.github.com/trilopin/8e305575f50bb0c6396f
