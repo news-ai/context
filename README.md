@@ -58,7 +58,7 @@ Setup using [this](https://github.com/SykoTheKiD/DockerDjangoRest) tutorial.
 
 ### Deployment
 
-Run `fab APP_DOMAIN deploy`
+Run `fab CONTEXT deploy`
 
 ### Stack
 

@@ -1,4 +1,4 @@
-from fabric.api import env, run, sudo, local, runs_once, cd, prefix
+from fabric.api import env, run, sudo, local, runs_once, cd, prefix, parallel
 # Uncomment this two lines  if you need debug mode
 # import paramiko
 # paramiko.common.logging.basicConfig(level=paramiko.common.DEBUG)
@@ -9,11 +9,11 @@ GCE_ZONE = 'us-east1-c'
 GCE_HOSTMATCH = 'newsai-context-api-3-.*'
 
 
-def APP_DOMAIN():
-    """Preconf APP_DOMAIN to do action 
-    Deploy with `fab APP_DOMAIN deploy`    
+def CONTEXT():
+    """Preconf CONTEXT to do action 
+    Deploy with `fab CONTEXT deploy`    
     """
-    env.domain_name = "APP_DOMAIN"
+    env.domain_name = "CONTEXT"
     gcloud()
     env.hosts = gcloud_hosts(GCE_PROJECT, GCE_ZONE, GCE_HOSTMATCH)
 
@@ -43,6 +43,7 @@ def gcloud():
     env.env_file = "requirements.txt"
 
 
+@parallel
 def deploy():
     with cd("/var/apps/context"), prefix('source /var/apps/context/context/bin/activate'):
         with cd("/var/apps/context/api/app"):
