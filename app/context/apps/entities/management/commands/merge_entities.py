@@ -10,7 +10,7 @@ from context.apps.entities.models import Entity, EntityScore
 class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
-        for i in range(0, 100):
+        for i in range(0, 1000):
             # Find the most popular duplicate entity
             duplicate_entities = Entity.objects.values('name')
             duplicate_entities_count = duplicate_entities.annotate(
