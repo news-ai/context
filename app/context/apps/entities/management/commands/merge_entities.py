@@ -10,12 +10,13 @@ from context.apps.entities.models import Entity, EntityScore
 class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
-        # Find the most popular duplicate entity
-        duplicate_entities = Entity.objects.values('name')
-        duplicate_entities_count = duplicate_entities.annotate(
-            Count('id')).order_by().filter(id__count__gt=1)
+        upper_limit = 126
+        for i in range(0, upper_limit):
+            # Find the most popular duplicate entity
+            duplicate_entities = Entity.objects.values('name')
+            duplicate_entities_count = duplicate_entities.annotate(
+                Count('id')).order_by().filter(id__count__gt=1)
 
-        while len(duplicate_entities_count) > 0:
             # What entity are we talking about
             print 'Duplicate left', len(duplicate_entities_count)
             single_entity_name = duplicate_entities_count[0]['name']
