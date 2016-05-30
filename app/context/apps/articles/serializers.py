@@ -90,6 +90,11 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
                 added_by = User.objects.filter(pk=data['added_by'].pk)[0]
                 data['added_by'] = added_by
 
+            if 'publisher_feed' in data:
+                publisher_feed = PublisherFeed.objects.filter(
+                    pk=data['publisher_feed'])
+                data['publisher_feed'] = publisher_feed
+
             author_list = None
             entity_list = None
             if 'authors' in data:
