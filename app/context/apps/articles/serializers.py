@@ -54,7 +54,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
             'added_at': obj.added_at,
             'starred': user_article and user_article.starred,
             'read_later': user_article and user_article.read_later,
-            'publisher_feed': obj.publisher_feed.pk,
+            'publisher_feed': obj.publisher_feed and obj.publisher_feed.pk,
         }
 
     # Defining behavior of when a new Article is added
