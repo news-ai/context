@@ -22,6 +22,8 @@ ALLOWED_HOSTS = [
     '.internal.newsai.org.',
     '.publisher.newsai.org',
     '.publisher.newsai.org.',
+    '.publisherstaging.newsai.org',
+    '.publisherstaging.newsai.org.',
 ]
 
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
