@@ -166,7 +166,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
         fields = ('url', 'name', 'created_at',
                   'header_image', 'authors', 'basic_summary', 'entity_scores',
                   'entities_processed', 'is_approved', 'opening_paragraph',
-                  'added_by',)
+                  'added_by', 'publisher_feed',)
 
 
 class UserArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
