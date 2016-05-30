@@ -61,7 +61,8 @@ CORS_ORIGIN_WHITELIST = (
     'publisher-new.newsai.org',
     'publisher-staging.newsai.org',
     'localhost:8000',
-    'localhost:3000'
+    'localhost:3000',
+    'publisherstaging.newsai.org',
 )
 
 CORS_ALLOW_CREDENTIALS = True
