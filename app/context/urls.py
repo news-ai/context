@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^docs/', include('rest_framework_swagger.urls')),
 
     # Publisher redirect
+    url(r'^publisher/$', publisher_redirect),
     url(r'^publisher/(?P<resource>[\w\-]+)/$', publisher_redirect),
     url(r'^publisher/(?P<resource>[\w\-]+)/(?P<id>[0-9]+)/$', publisher_redirect),
 
