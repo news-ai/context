@@ -18,11 +18,12 @@ from rest_framework_bulk import (
 from .utils import url_validate
 from .tasks import post_create_article
 from .models import Article, Publisher, Author, PublisherFeed, UserArticle, UserPublisher, Topic
+from context.apps.general.serializers import DynamicFieldsModelSerializer
 from context.apps.entities.models import EntityScore
 from context.celery import app as celery_app
 
 
-class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSerializer):
+class ArticleSerializer(BulkSerializerMixin, DynamicFieldsModelSerializer, serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(required=False)
     url = serializers.URLField(required=False)
 
@@ -36,7 +37,8 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
                 user=current_user, article=obj)
             if len(user_articles) is 1:
                 user_article = user_articles[0]
-        return {
+
+        to_return = {
             'id': obj.pk,
             'name': obj.name,
             'url': obj.url,
@@ -56,6 +58,13 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
             'read_later': user_article and user_article.read_later,
             'publisher_feed': obj.publisher_feed and obj.publisher_feed.pk,
         }
+
+        if hasattr(self, 'allowed'):
+            existing = set(to_return.keys())
+            for field_name in existing - self.allowed:
+                del to_return[field_name]
+
+        return to_return
 
     # Defining behavior of when a new Article is added
     def create(self, data):
