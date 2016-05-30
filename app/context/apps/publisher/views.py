@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 
 
 def publisher_redirect(request, resource=None, id=None):
-    url = 'https://publisher.newsai.org/'
+    url = 'https://publisher.newsai.org'
     if resource:
         url = url + '/' + resource
     if id:
