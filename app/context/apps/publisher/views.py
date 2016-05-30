@@ -3,5 +3,8 @@
 from django.http import HttpResponseRedirect
 
 
-def publisher_redirect(request, resource='articles', id='1'):
-    return HttpResponseRedirect('https://publisher.newsai.org/' + resource + '/' + id)
+def publisher_redirect(request, resource=None, id=None):
+    url = 'https://publisher.newsai.org/' + resource
+    if id:
+        url = url + '/' + id
+    return HttpResponseRedirect(url)
