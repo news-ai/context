@@ -93,7 +93,7 @@ class ArticleSerializer(BulkSerializerMixin, serializers.HyperlinkedModelSeriali
 
             if 'publisher_feed' in data:
                 publisher_feed = PublisherFeed.objects.filter(
-                    pk=data['publisher_feed'])
+                    pk=data['publisher_feed'].pk)[0]
                 data['publisher_feed'] = publisher_feed
 
             author_list = None
