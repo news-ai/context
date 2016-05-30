@@ -27,6 +27,12 @@ class Entity(models.Model):
     dbpedia = models.URLField(blank=True, null=True)
     geonames = models.URLField(blank=True, null=True)
 
+    # Social media profiles for entity
+    twitter_user = models.TextField(blank=True, null=True, max_length=100)
+    facebook_user = models.TextField(blank=True, null=True, max_length=100)
+    hashtag = models.TextField(blank=True, null=True, max_length=100)
+    linkedin_user = models.TextField(blank=True, null=True, max_length=100)
+
     # restrictions are from:
     # http://stackoverflow.com/questions/15965166/what-is-the-maximum-length-of-latitude-and-longitude
     geo_lat = models.DecimalField(
