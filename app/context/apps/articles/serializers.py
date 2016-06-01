@@ -256,9 +256,9 @@ class BeatSerializer(serializers.HyperlinkedModelSerializer):
         return {
             'id': obj.pk,
             'name': obj.name,
-            'parent_Beat': obj.parent_Beat and BeatSerializer(obj.parent_Beat).data,
+            'parent_beat': obj.parent_beat and BeatSerializer(obj.parent_beat).data,
         }
 
     class Meta:
         model = Beat
-        fields = ('name', 'parent_Beat',)
+        fields = ('name', 'parent_beat',)
