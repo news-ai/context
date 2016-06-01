@@ -30,6 +30,10 @@ class Publisher(models.Model):
     for_country = CountryField(blank_label='(select country)', blank=True)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
+    # Social media profiles for entity
+    twitter_user = models.TextField(blank=True, null=True, max_length=100)
+    facebook_user = models.TextField(blank=True, null=True, max_length=100)
+
     # Extra boolean objects
     is_approved = models.BooleanField(blank=False, default=False)
 
@@ -58,6 +62,11 @@ class Author(models.Model):
     position = models.TextField(blank=True)
     description = models.TextField(blank=True)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    # Social media profiles for entity
+    twitter_user = models.TextField(blank=True, null=True, max_length=100)
+    facebook_user = models.TextField(blank=True, null=True, max_length=100)
+    linkedin_user = models.TextField(blank=True, null=True, max_length=100)
 
     def __unicode__(self):
         return self.name
