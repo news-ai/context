@@ -54,6 +54,9 @@ class PublisherFeed(models.Model):
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
     writes_for = models.ManyToManyField(Publisher, blank=True)
+    topic = models.ManyToManyField(Topic, blank=True, null=True)
+    position = models.TextField(blank=True)
+    description = models.TextField(blank=True)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
