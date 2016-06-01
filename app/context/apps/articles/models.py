@@ -11,14 +11,14 @@ from .managers import ArticleManager
 from context.apps.entities.models import Entity, EntityScore
 
 
-class Topic(models.Model):
+class Beat(models.Model):
     name = models.TextField(blank=False, max_length=100)
-    parent_topic = models.ForeignKey('self', blank=True, null=True)
+    parent_beat = models.ForeignKey('self', blank=True, null=True)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
-        if self.parent_topic:
-            return ' - '.join((self.parent_topic.name, self.name))
+        if self.parent_beat:
+            return ' - '.join((self.parent_beat.name, self.name))
         return self.name
 
 
@@ -45,7 +45,7 @@ class PublisherFeed(models.Model):
     publisher = models.ForeignKey(Publisher, blank=True, null=True)
     feed_url = models.URLField(blank=False, unique=True, max_length=255)
     tags = models.TextField(blank=True)
-    topic = models.ForeignKey(Topic, blank=True, null=True)
+    beat = models.ForeignKey(Beat, blank=True, null=True)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __unicode__(self):
@@ -58,7 +58,7 @@ class PublisherFeed(models.Model):
 class Author(models.Model):
     name = models.TextField(blank=False, max_length=100)
     writes_for = models.ManyToManyField(Publisher, blank=True)
-    topic = models.ManyToManyField(Topic, blank=True)
+    beat = models.ManyToManyField(Beat, blank=True)
     position = models.TextField(blank=True)
     description = models.TextField(blank=True)
     added_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)

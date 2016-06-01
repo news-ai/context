@@ -10,7 +10,7 @@ from rest_framework.exceptions import NotFound, NotAuthenticated
 
 # Imports from app
 from context.apps.general.views import general_response, permission_required
-from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher, Topic
+from .models import Article, Author, Publisher, PublisherFeed, UserArticle, UserPublisher, Beat
 from .permissions import GeneralPermission
 from .serializers import (
     ArticleSerializer,
@@ -19,7 +19,7 @@ from .serializers import (
     PublisherSerializer,
     UserArticleSerializer,
     UserPublisherSerializer,
-    TopicSerializer,
+    BeatSerializer,
 )
 
 
@@ -318,18 +318,18 @@ class AuthorViewSet(viewsets.ModelViewSet):
         raise NotFound()
 
 
-class TopicViewSet(viewsets.ModelViewSet):
-    serializer_class = TopicSerializer
+class BeatViewSet(viewsets.ModelViewSet):
+    serializer_class = BeatSerializer
     permission_classes = (GeneralPermission,)
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self,):
         uid = self.kwargs.get('pk', None)
-        return general_response(self.request, Topic, uid)
+        return general_response(self.request, Beat, uid)
 
     @detail_route()
     def articles(self, request, pk=None):
-        publisher_feeds = PublisherFeed.objects.filter(topic=pk)
+        publisher_feeds = PublisherFeed.objects.filter(Beat=pk)
 
         if publisher_feeds is not None:
             print publisher_feeds

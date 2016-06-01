@@ -8,7 +8,7 @@ from .models import (
     Author,
     Publisher,
     PublisherFeed,
-    Topic,
+    Beat,
     UserArticle,
     UserPublisher,
 )
@@ -17,6 +17,6 @@ admin.site.register(Article)
 admin.site.register(Author)
 admin.site.register(Publisher)
 admin.site.register(PublisherFeed)
-admin.site.register(Topic)
+admin.site.register(Beat)
 admin.site.register(UserArticle)
 admin.site.register(UserPublisher)

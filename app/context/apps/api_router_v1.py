@@ -15,7 +15,7 @@ from .articles.views import (
     AuthorViewSet,
     PublisherFeedViewSet,
     PublisherViewSet,
-    TopicViewSet,
+    BeatViewSet,
 )
 
 router = routers.DefaultRouter()
@@ -30,4 +30,4 @@ router.register(r'entities', EntityViewSet, base_name='entity')
 router.register(r'entityscores', EntityScoreViewSet, base_name='entityscore')
 router.register(r'events', EventViewSet, base_name='event')
 router.register(r'users', UserViewSet, base_name='user')
-router.register(r'topics', TopicViewSet, base_name='topic')
+router.register(r'beats', BeatViewSet, base_name='beat')
