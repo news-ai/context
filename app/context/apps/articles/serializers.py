@@ -82,7 +82,18 @@ class ArticleSerializer(BulkSerializerMixin, DynamicFieldsModelSerializer, seria
 
         # If a person is trying to add an article that already exists
         if django_article and 'added_by' in data:
-            added_by = User.objects.filter(pk=data['added_by'].pk)[0]
+            added_by = User.objects.filter(pk=data['added_by'].pk)
+            if len(added_by) > 0:
+                added_by = added_by[0]
+                user_article = UserArticle.objects.filter(
+                    article=django_article, user=added_by)
+                if len(user_article) > 0:
+                    user_article = user_article[0]
+                    user_article.starred = True
+                else:
+                    user_article = User.objects.create(
+                        article=django_article, user=added_by, starred=True)
+                user_article.save()
 
         if not django_article:
             if publisher:
