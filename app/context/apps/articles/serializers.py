@@ -89,10 +89,10 @@ class ArticleSerializer(BulkSerializerMixin, DynamicFieldsModelSerializer, seria
                     article=django_article, user=added_by)
                 if len(user_article) > 0:
                     user_article = user_article[0]
-                    user_article.starred = True
+                    user_article.read_later = True
                 else:
                     user_article = User.objects.create(
-                        article=django_article, user=added_by, starred=True)
+                        article=django_article, user=added_by, read_later=True)
                 user_article.save()
 
         if not django_article:
