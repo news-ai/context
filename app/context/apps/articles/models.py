@@ -84,6 +84,14 @@ class Article(models.Model):
     publisher_feed = models.ForeignKey(
         PublisherFeed, blank=False, null=True, on_delete=models.CASCADE)
 
+    SOURCE_CHOICES = (
+        (u'Twitter', u'Twitter'),
+        (u'RSS', u'RSS'),
+        (u'Reddit', u'Reddit'),
+    )
+    source = models.CharField(
+        choices=SOURCE_CHOICES, max_length=20, default='RSS')
+
     # Information coming from knowledge
     entity_scores = models.ManyToManyField(EntityScore, blank=True)
 

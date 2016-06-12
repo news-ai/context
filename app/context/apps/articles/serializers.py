@@ -57,6 +57,7 @@ class ArticleSerializer(BulkSerializerMixin, DynamicFieldsModelSerializer, seria
             'starred': user_article and user_article.starred,
             'read_later': user_article and user_article.read_later,
             'publisher_feed': obj.publisher_feed and obj.publisher_feed.pk,
+            'source': obj.source,
         }
 
         if hasattr(self, 'allowed'):
@@ -99,7 +100,7 @@ class ArticleSerializer(BulkSerializerMixin, DynamicFieldsModelSerializer, seria
             if publisher:
                 publisher = Publisher.objects.filter(url=publisher)
                 data['publisher'] = publisher[
-                    0] or Publisher.objects.filter(name="Other")
+                    0] or Publisher.objects.filter(name='Other')
 
             if 'basic_summary' in data:
                 data['basic_summary'] = smart_unicode(data['basic_summary'])
