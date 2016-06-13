@@ -88,6 +88,7 @@ class Article(models.Model):
         (u'Twitter', u'Twitter'),
         (u'RSS', u'RSS'),
         (u'Reddit', u'Reddit'),
+        (u'Email', u'Email'),
     )
     source = models.CharField(
         choices=SOURCE_CHOICES, max_length=20, default='RSS')

@@ -100,7 +100,7 @@ class ArticleSerializer(BulkSerializerMixin, DynamicFieldsModelSerializer, seria
             if publisher:
                 publisher = Publisher.objects.filter(url=publisher)
                 data['publisher'] = publisher[
-                    0] or Publisher.objects.filter(name='Other')
+                    0] or Publisher.objects.filter(name='Other')[0]
 
             if 'basic_summary' in data:
                 data['basic_summary'] = smart_unicode(data['basic_summary'])
